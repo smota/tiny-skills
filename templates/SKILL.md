@@ -17,6 +17,14 @@ State one focused job for this independent agent.
 - Return concise, actionable output.
 - Never assume another skill, shared state, or repository-local service.
 
+## Prerequisites
+
+List required tools, runtimes, packages, accounts, permissions, and setup steps. Write `None` when no prerequisites exist.
+
+## Credits
+
+List upstream skills, prompts, research, tools, or adaptations. Write `None` when no external basis exists.
+
 ## Commands
 
 ### `/replace-with-command [input]`

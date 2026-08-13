@@ -50,4 +50,14 @@ docs/
 4. Add examples for non-obvious workflows.
 5. Validate locally, then install from branch or commit with `npx skills add`.
 
+## Skill catalog
+
+No skills published yet. New skills must be listed here when created and removed when deleted.
+
+| Class | Skill | Purpose | Prerequisites | Install |
+|---|---|---|---|---|
+| — | — | — | — | — |
+
+Each skill's own `SKILL.md` is the authoritative guide for detailed usage. Repository structure and contribution rules live in [`AGENTS.md`](AGENTS.md); authoring details live in [`docs/authoring.md`](docs/authoring.md).
+
 See [`docs/authoring.md`](docs/authoring.md).

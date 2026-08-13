@@ -1,0 +1,42 @@
+# AGENTS.md
+
+## Mission
+
+Build and maintain a catalog of independent, installable agent skills. Each skill solves one focused problem through clear instructions and simple slash commands.
+
+## Repository structure
+
+- `skills/<class>/<skill-name>/` — one self-contained skill.
+- Supported classes: `personal`, `research`, `writing`, `software-engineering`.
+- `SKILL.md` — required agent entry point and usage documentation.
+- `README.md` — repository catalog and installation guidance.
+- `docs/` — repository-wide authoring guidance.
+- `templates/` — starter files only; never treated as runtime dependencies.
+
+## Skill contract
+
+Every skill MUST:
+
+- Include valid `SKILL.md` frontmatter with unique `name`, useful `description`, and matching `category`.
+- State purpose, behavior, inputs, outputs, constraints, failure behavior, and slash commands in its own documentation.
+- Remain self-contained. No dependency on sibling skills, shared prompts, shared state, or undocumented services.
+- Declare underlying tools, runtimes, accounts, packages, permissions, and setup steps under `## Prerequisites`.
+- Credit upstream skills, prompts, research, tools, or substantial adaptations under `## Credits`.
+- Avoid secrets and silently destructive behavior.
+
+## Workflow
+
+1. Choose exactly one class.
+2. Create `skills/<class>/<skill-name>/`.
+3. Write and test the skill's `SKILL.md`; add local references, examples, and scripts only when needed.
+4. Update root `README.md` in the same change: add or remove the skill from the catalog, with class, purpose, prerequisites, and install command.
+5. Validate frontmatter, paths, command documentation, credits, prerequisites, and absence of cross-skill dependencies.
+6. Commit the skill and catalog update together.
+
+## Consistency rules
+
+- Prefer plain Markdown and deterministic helpers over frameworks.
+- Keep command names explicit and focused; document composed commands individually.
+- Use lowercase, short, hyphenated skill names.
+- README is the public catalog; each skill's own documentation is the authority for detailed usage.
+- Do not merge a skill without its README catalog entry.
