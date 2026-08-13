@@ -1,6 +1,7 @@
 ---
 name: replace-with-skill-name
 description: Describe when this skill should be used and what it produces.
+category: software-engineering
 ---
 
 # Replace With Skill Name

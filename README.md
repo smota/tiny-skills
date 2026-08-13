@@ -1,8 +1,8 @@
 # tiny-skills
 
-Self-contained, vibe-coded agent skills repository.
+Self-contained, production-ready agent skills repository.
 
-Each directory under `skills/` is an independent agent. Agents do not depend on, import, or coordinate with other agents in this repository. Every agent follows the Agent Skill standard and can be installed directly with:
+Each directory under `skills/` is an independent agent. Skills are grouped by class for discovery, while remaining fully independent. Agents do not depend on, import, or coordinate with other agents in this repository. Every agent follows the Agent Skill standard and can be installed directly with:
 
 ```bash
 npx skills add github.com/<owner>/tiny-skills --skill <skill-name>
@@ -22,12 +22,17 @@ Skill structures are inspired by [`smota/metaskills --skill agent-builder`](http
 
 ```text
 skills/
-  <skill-name>/
-    SKILL.md              # required entry point
-    README.md             # optional human-facing guide
-    references/            # optional focused supporting material
-    examples/              # optional input/output examples
-    scripts/               # optional deterministic helpers
+  personal/
+    <skill-name>/
+  research/
+    <skill-name>/
+  writing/
+    <skill-name>/
+  software-engineering/
+    <skill-name>/
+
+  # Each skill directory contains:
+  # SKILL.md, optional README.md, references/, examples/, scripts/
 
 templates/
   SKILL.md                # minimal starter template
@@ -38,8 +43,9 @@ docs/
 
 ## Add skill
 
-1. Copy `templates/SKILL.md` to `skills/<skill-name>/SKILL.md`.
-2. Keep all context needed by agent inside that directory.
+1. Choose a class: `personal`, `research`, `writing`, or `software-engineering`.
+2. Copy `templates/SKILL.md` to `skills/<class>/<skill-name>/SKILL.md`.
+3. Keep all context needed by agent inside that directory.
 3. Define simple slash commands under `## Commands`; document arguments, output, and failure behavior.
 4. Add examples for non-obvious workflows.
 5. Validate locally, then install from branch or commit with `npx skills add`.

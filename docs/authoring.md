@@ -2,12 +2,13 @@
 
 ## Required contract
 
-Each skill is a directory under `skills/` containing `SKILL.md`. Keep skill names lowercase, short, and hyphenated. `SKILL.md` starts with YAML frontmatter:
+Each skill is a directory under `skills/<class>/` containing `SKILL.md`. Supported classes: `personal`, `research`, `writing`, and `software-engineering`. Keep skill names lowercase, short, and hyphenated. `SKILL.md` starts with YAML frontmatter:
 
 ```yaml
 ---
 name: example-skill
 description: One-line description of when to use skill.
+category: research
 ---
 ```
 
@@ -31,6 +32,7 @@ Composed commands should list each command separately, then document shared rule
 
 ## Self-containment checklist
 
+- Category matches parent directory.
 - No references to sibling skill paths.
 - No required shared environment variables, services, or databases.
 - Supporting references/examples stored inside skill directory.
@@ -43,7 +45,7 @@ Composed commands should list each command separately, then document shared rule
 From repository root:
 
 ```bash
-find skills -mindepth 2 -maxdepth 2 -name SKILL.md -print
+find skills -mindepth 3 -maxdepth 3 -name SKILL.md -print
 ```
 
 For each skill, verify frontmatter, unique `name`, useful `description`, command behavior, and absence of sibling dependencies. Test installation in a temporary consumer project before release.
