@@ -56,7 +56,7 @@ No skills published yet. New skills must be listed here when created and removed
 
 | Class | Skill | Purpose | Prerequisites | Install |
 |---|---|---|---|---|
-| software-engineering | [deer-workflow](skills/software-engineering/deer-workflow/) | Operate Deer Workflow graphs from inside an agent session | Node.js/Bun, `@deerwork-ai/deer-workflow`, selected agent harness | `npx skills add deerwork-ai/deer-workflow` |
+| software-engineering | [deer-workflow](skills/software-engineering/deer-workflow/) | Operate Deer Workflow graphs from inside an agent session | Node.js/Bun, `@deerwork-ai/deer-workflow`, selected agent harness | `npx skills add smota/tiny-skills --skill deer-workflow` |
 
 Each skill's own `SKILL.md` is the authoritative guide for detailed usage. Repository structure and contribution rules live in [`AGENTS.md`](AGENTS.md); authoring details live in [`docs/authoring.md`](docs/authoring.md).
 
