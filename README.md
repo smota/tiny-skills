@@ -8,6 +8,14 @@ Each directory under `skills/` is an independent agent. Skills are grouped by cl
 npx skills add github.com/<owner>/tiny-skills --skill <skill-name>
 ```
 
+## Skill catalog
+
+Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed usage.
+
+| Class | Skill | Purpose | Prerequisites | Install |
+|---|---|---|---|---|
+| software-engineering | [deer-workflow](skills/software-engineering/deer-workflow/) | Operate Deer Workflow graphs from inside an agent session | Node.js/Bun, `@deerwork-ai/deer-workflow`, selected agent harness | `npx skills add smota/tiny-skills --skill deer-workflow` |
+
 ## Design
 
 - **Self-contained:** skill instructions, references, examples, and command definitions live inside one skill directory.
@@ -50,14 +58,8 @@ docs/
 4. Add examples for non-obvious workflows.
 5. Validate locally, then install from branch or commit with `npx skills add`.
 
-## Skill catalog
+## Repository guidance
 
-No skills published yet. New skills must be listed here when created and removed when deleted.
-
-| Class | Skill | Purpose | Prerequisites | Install |
-|---|---|---|---|---|
-| software-engineering | [deer-workflow](skills/software-engineering/deer-workflow/) | Operate Deer Workflow graphs from inside an agent session | Node.js/Bun, `@deerwork-ai/deer-workflow`, selected agent harness | `npx skills add smota/tiny-skills --skill deer-workflow` |
-
-Each skill's own `SKILL.md` is the authoritative guide for detailed usage. Repository structure and contribution rules live in [`AGENTS.md`](AGENTS.md); authoring details live in [`docs/authoring.md`](docs/authoring.md).
+Repository structure and contribution rules live in [`AGENTS.md`](AGENTS.md); authoring details live in [`docs/authoring.md`](docs/authoring.md).
 
 See [`docs/authoring.md`](docs/authoring.md).
