@@ -15,6 +15,7 @@ Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed us
 | Class | Skill | Purpose | Prerequisites | Install |
 |---|---|---|---|---|
 | software-engineering | [deer-workflow](skills/software-engineering/deer-workflow/) | Operate Deer Workflow graphs from inside an agent session | Node.js/Bun, `@deerwork-ai/deer-workflow`, selected agent harness | `npx skills add smota/tiny-skills --skill deer-workflow` |
+| writing | [release-notes](skills/writing/release-notes/) | Turn supplied change material or selected Git commits into user-centered release notes | None for supplied content; Git and repository read access for commit collection | `npx skills add smota/tiny-skills --skill release-notes` |
 
 ## Design
 
