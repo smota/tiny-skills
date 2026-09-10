@@ -1,6 +1,6 @@
 ---
 name: project-init
-description: Initialize or plan a project's engineering baseline through a short intake, canonical agent instructions, an appropriate folder structure, ADR lifecycle, tooling checks, and optional AFD harness setup. Use for project bootstrapping or adopting these practices in an existing repository, not feature implementation.
+description: Initialize or plan a project's engineering baseline through a short intake, canonical agent instructions, an appropriate folder structure, ADR lifecycle, and tooling checks. Use for project bootstrapping or adopting these practices in an existing repository, not feature implementation.
 category: software-engineering
 ---
 
@@ -26,9 +26,6 @@ Use information already supplied or safely observable. Unknown scope is valid.
   Git is needed for repository inspection and Git operations, not for a documentation-only folder.
 - Code scaffolding: the selected project's toolchain/package manager and required native build
   tools. Inspect installed versions first. Missing tools do not authorize global installation.
-- Optional AFD: installed `afd` with harness commands; selected agent CLIs and their existing
-  authenticated sessions for live tests. AFD state/staging permissions and live test scope must
-  be covered by authorization. Do not read credentials or initiate account setup.
 - License selection advice or dependency/version research may require authoritative web access.
   Use exact license text from an authoritative source when adopting a license.
 - No runtime, account, sibling skill, service, or package is required just to use this skill's instructions.
@@ -127,8 +124,6 @@ live discovery, or runtime behavior until those mechanisms exist and have been c
 - Derived from Samuel's Meshloop initialization and the general engineering practices
   extracted from Ativaly's project instructions. Domain rules, source documents, skills,
   and framework implementations are not redistributed or required by this skill.
-- AFD project harness design informs canonical policy, minimal adapters, exact-plan
-  staging, live evidence, apply, and verification: https://github.com/smota/ai-foundry-desk
 - Architecture Decision Records provide the decision-history pattern. The explicit
   decision/implementation lifecycle here comes from the Meshloop planning agreement.
 

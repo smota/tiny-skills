@@ -46,22 +46,6 @@ Keep AGENTS.md canonical where compatible. Use thin harness-specific pointers on
 verified instruction surfaces; avoid duplicate policies. Do not assume a filename proves
 discovery or that identically named executables identify the same product.
 
-For AFD, inspect the installed version, help, and current project-harness contract first.
-Do not memorize support from the Meshloop example: discovery and safe smoke-runner support
-are separate facts, and either may change between versions.
-
-Typical AFD sequence (adapt exact syntax to the installed CLI):
-
-```text
-afd harness audit PROJECT --json
-afd harness plan PROJECT --agents "SELECTED,AGENTS" --json
-afd harness stage PROJECT --agents "SELECTED,AGENTS" --output EXTERNAL_STAGE --json
-afd harness test PROJECT --agents "SELECTED,AGENTS" --json
-afd harness test PROJECT --agents "SELECTED,AGENTS" --live --evidence EXTERNAL_REPORT --json
-afd harness apply PROJECT --agents "SELECTED,AGENTS" --evidence EXTERNAL_REPORT --confirm EXACT_TOKEN
-afd harness verify PROJECT --receipt RECEIPT --json
-```
-
 The placeholders describe values to resolve, not executable defaults. Quote comma-separated
 agent lists in PowerShell. Audit/plan are read-only; staging, live sessions, caches, evidence,
 and receipts can write outside the target. Identify and authorize those paths/actions first.
