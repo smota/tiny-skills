@@ -14,6 +14,7 @@ Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed us
 
 | Class | Skill | Purpose | Prerequisites | Install |
 |---|---|---|---|---|
+| software-engineering | [local-agent-instruction-intelligence](skills/software-engineering/local-agent-instruction-intelligence/) | Distill session lessons and consolidate scoped agent-instruction layers with optional recursive and advisory-guidance review | Project read access and visible session context; write access only for confirmed changes | `npx skills add smota/tiny-skills --skill local-agent-instruction-intelligence` |
 | software-engineering | [project-init](skills/software-engineering/project-init/) | Initialize project practices through a short intake, canonical instructions, ADRs, and stack-aware validation | Read/write access; selected toolchain for code; optional AFD and agent CLIs | `npx skills add smota/tiny-skills --skill project-init` |
 | writing | [release-notes](skills/writing/release-notes/) | Turn supplied change material or selected Git commits into user-centered release notes | None for supplied content; Git and repository read access for commit collection | `npx skills add smota/tiny-skills --skill release-notes` |
 
