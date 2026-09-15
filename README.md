@@ -14,9 +14,20 @@ Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed us
 
 | Class | Skill | Purpose | Prerequisites | Install |
 |---|---|---|---|---|
+| software-engineering | [git-deliver](skills/software-engineering/git-deliver/) | Commit and push task-owned work, optionally integrate into the parent branch, and assess multi-agent worktrees | Git, repository access, commit identity, remote credentials for pushes, and project validation tools | `npx skills add smota/tiny-skills --skill git-deliver` |
 | software-engineering | [local-agent-instruction-intelligence](skills/software-engineering/local-agent-instruction-intelligence/) | Distill session lessons and consolidate scoped agent-instruction layers with optional recursive and advisory-guidance review | Project read access and visible session context; write access only for confirmed changes | `npx skills add smota/tiny-skills --skill local-agent-instruction-intelligence` |
 | software-engineering | [project-init](skills/software-engineering/project-init/) | Initialize project practices through a short intake, canonical instructions, ADRs, and stack-aware validation | Read/write access; selected toolchain for code; optional AFD and agent CLIs | `npx skills add smota/tiny-skills --skill project-init` |
 | writing | [release-notes](skills/writing/release-notes/) | Write value-led technical notes, user-facing release notes, and release announcements from selected commits, with flexible focus and presentation | None for supplied commit output; Git and repository read access for collection; optional hosted-source read access | `npx skills add smota/tiny-skills --skill release-notes` |
+
+## Git delivery quick start
+
+Use `/git-deliver` to commit and push the current task, `/git-deliver-merge [parent]`
+to also merge and push the parent branch, or `/git-deliver-audit` for an inspection
+without mutations. These are conversational commands; equivalent prose works.
+The standard workflow proceeds within the command's authorization. Mixed changes,
+uncertain parent branches, and concurrent writers receive a concrete scope review.
+Worktree orphan candidates are reported for review; delivery does not delete them.
+See the [skill documentation](skills/software-engineering/git-deliver/SKILL.md).
 
 ## Release communication quick start
 
