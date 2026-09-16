@@ -14,10 +14,25 @@ Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed us
 
 | Class | Skill | Purpose | Prerequisites | Install |
 |---|---|---|---|---|
+| software-engineering | [empirical-refinement-loop](skills/software-engineering/empirical-refinement-loop/) | Run bounded, reviewed refinement cycles with comparable evidence and repository-backed continuity | Project read/write access, native test/measurement tools, and an independent subagent or configured reviewer CLI for reviewed execution | `npx skills add smota/tiny-skills --skill empirical-refinement-loop` |
 | software-engineering | [git-deliver](skills/software-engineering/git-deliver/) | Commit and push task-owned work, optionally integrate into the parent branch, and assess multi-agent worktrees | Git, repository access, commit identity, remote credentials for pushes, and project validation tools | `npx skills add smota/tiny-skills --skill git-deliver` |
 | software-engineering | [local-agent-instruction-intelligence](skills/software-engineering/local-agent-instruction-intelligence/) | Distill session lessons and consolidate scoped agent-instruction layers with optional recursive and advisory-guidance review | Project read access and visible session context; write access only for confirmed changes | `npx skills add smota/tiny-skills --skill local-agent-instruction-intelligence` |
 | software-engineering | [project-init](skills/software-engineering/project-init/) | Initialize project practices through a short intake, canonical instructions, ADRs, and stack-aware validation | Read/write access; selected toolchain for code; optional AFD and agent CLIs | `npx skills add smota/tiny-skills --skill project-init` |
 | writing | [release-notes](skills/writing/release-notes/) | Write value-led technical notes, user-facing release notes, and release announcements from selected commits, with flexible focus and presentation | None for supplied commit output; Git and repository read access for collection; optional hosted-source read access | `npx skills add smota/tiny-skills --skill release-notes` |
+
+## Empirical refinement quick start
+
+Use `/empirical-refinement-loop init [path]` to connect existing engineering
+documentation and agree where missing guidance belongs. The compact
+`.empirical-refinement-loop/state.json` index points to that documentation and
+tracks progress across conversations; internal document storage is also an option.
+
+Use `/empirical-refinement-loop plan [scope]` for a read-only proposal,
+`/empirical-refinement-loop run [scope] [rounds=N]` for bounded execution, and
+`/empirical-refinement-loop resume` to revalidate state and continue. These are
+conversational commands. Reviewed execution uses a real independent reviewer;
+commits and pushes require their own delivery scope. See the
+[skill documentation](skills/software-engineering/empirical-refinement-loop/SKILL.md).
 
 ## Git delivery quick start
 
