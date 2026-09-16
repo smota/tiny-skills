@@ -77,4 +77,4 @@ These are conversational entry points, not executable CLI flags. Equivalent pros
 
 ## Credits
 
-Adapted from Samuel's Empirical Refinement Loop design and supplied Meshloop-derived engineering discussion, including the recovered session steps 125 and 141 and subsequent repository-integration decisions. These are design provenance, not runtime dependencies or proof of Meshloop results. Statistical guidance references the NIST Engineering Statistics Handbook in the scorecard reference.
+Inspired by [Meshloop](https://github.com/smota/meshloop), by Samuel. Statistical guidance references the NIST Engineering Statistics Handbook in the scorecard reference.
