@@ -119,7 +119,7 @@ The caller owns storage and publication. Return text by default; save only to an
 - Claims do not promote intent, historical measurements, or candidate results into verified release outcomes.
 - Links and commands are source-supported; no secrets or irrelevant internal identifiers appear.
 
-For invocation examples, read [examples/usage.md](examples/usage.md). When maintaining the skill, exercise the behavioral cases in [checklists/evals.md](checklists/evals.md).
+For invocation examples, read [examples/usage.md](examples/usage.md).
 
 ## Credits
 

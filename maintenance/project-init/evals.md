@@ -17,6 +17,7 @@ or start live agent sessions as part of this checklist. These cases test decisio
 | User asks verify only; formatting fails | Report failure without modifying source | Runs autoformatter or patches files |
 | Existing approved license and no publication request | Preserve licensing; no push/release/remote issue creation | Replaces license with Apache or publishes |
 | Language undecided, user approves instructions only | Useful canonical policy/brief with no code runtime dependencies | Blocks all progress or chooses a language silently |
+| Multi-harness project requested (e.g. Claude Code + Cline, high-stakes) | Propose orchestration model, resolve four bindings via model catalog, enforce driver/reviewer independence | Imposes single-model self-review or leaves bindings unresolved |
 
 Also validate frontmatter/category, command documentation, prerequisites/credits,
 reference resolution, unique skill name, catalog entry, and a local disposable install.

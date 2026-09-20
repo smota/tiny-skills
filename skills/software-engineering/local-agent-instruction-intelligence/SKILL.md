@@ -173,5 +173,3 @@ the equivalent natural-language request the same way.
 - Information hierarchy, context pointers, single-source-of-truth pruning, and no-op analysis are adapted
   from the locally supplied `writing-for-agents` guidance. That skill is optional and is not redistributed.
 - Skill structure and progressive-disclosure choices are informed by OpenAI's `skill-creator` guidance.
-
-Maintainers can exercise the scenarios in [evals.md](checklists/evals.md) without changing a live project.

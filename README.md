@@ -17,7 +17,7 @@ Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed us
 | software-engineering | [empirical-refinement-loop](skills/software-engineering/empirical-refinement-loop/) | Run bounded, reviewed refinement cycles with comparable evidence and repository-backed continuity | Project read/write access, native test/measurement tools, and an independent subagent or configured reviewer CLI for reviewed execution | `npx skills add smota/tiny-skills --skill empirical-refinement-loop` |
 | software-engineering | [git-deliver](skills/software-engineering/git-deliver/) | Commit and push task-owned work, optionally integrate into the parent branch, and assess multi-agent worktrees | Git, repository access, commit identity, remote credentials for pushes, and project validation tools | `npx skills add smota/tiny-skills --skill git-deliver` |
 | software-engineering | [local-agent-instruction-intelligence](skills/software-engineering/local-agent-instruction-intelligence/) | Distill session lessons and consolidate scoped agent-instruction layers with optional recursive and advisory-guidance review | Project read access and visible session context; write access only for confirmed changes | `npx skills add smota/tiny-skills --skill local-agent-instruction-intelligence` |
-| software-engineering | [project-init](skills/software-engineering/project-init/) | Initialize project practices through a short intake, canonical instructions, ADRs, and stack-aware validation | Read/write access; selected toolchain for code; optional AFD and agent CLIs | `npx skills add smota/tiny-skills --skill project-init` |
+| software-engineering | [project-init](skills/software-engineering/project-init/) | Initialize project practices through a short intake, canonical instructions, ADRs, stack-aware validation, and optional multi-harness model tiering | Read/write access; selected toolchain for code; optional AFD and agent CLIs | `npx skills add smota/tiny-skills --skill project-init` |
 | writing | [release-notes](skills/writing/release-notes/) | Write value-led technical notes, user-facing release notes, and release announcements from selected commits, with flexible focus and presentation | None for supplied commit output; Git and repository read access for collection; optional hosted-source read access | `npx skills add smota/tiny-skills --skill release-notes` |
 
 ## Empirical refinement quick start
@@ -84,6 +84,8 @@ equivalent natural-language request if your harness does not register slash comm
 The skill preserves existing work and covers canonical agent instructions, project structure,
 architecture decisions, and stack-aware checks. Code scaffolding needs the selected toolchain;
 AFD and live harness checks are optional and require their own setup and authorization.
+Multi-harness governance and frontier/Chinese model tiering can be planned using the
+embedded model catalog and execution model references.
 See the [skill documentation](skills/software-engineering/project-init/SKILL.md) for inputs,
 prerequisites, outputs, and failure behavior.
 
@@ -92,6 +94,7 @@ prerequisites, outputs, and failure behavior.
 - **Self-contained:** skill instructions, references, examples, and command definitions live inside one skill directory.
 - **Independent:** no shared runtime, prompts, state, or cross-skill assumptions.
 - **Standard:** each skill exposes `SKILL.md` with standard frontmatter and can be consumed by compatible agent clients.
+- **Lean installs:** a skill directory holds only what agents read or run; evals and refresh procedures live in `maintenance/<skill-name>/`.
 - **Simple:** prefer small slash commands over frameworks or deployment infrastructure.
 - **Composable commands:** use explicit command sections when one skill offers multiple related slash commands.
 
@@ -118,6 +121,9 @@ templates/
 
 docs/
   authoring.md            # authoring and validation rules
+
+maintenance/
+  <skill-name>/           # maintainer-only evals, refresh procedures, generators
 ```
 
 ## Add skill
@@ -125,8 +131,8 @@ docs/
 1. Choose a class: `personal`, `research`, `writing`, or `software-engineering`.
 2. Copy `templates/SKILL.md` to `skills/<class>/<skill-name>/SKILL.md`.
 3. Keep all context needed by the agent inside that directory.
-4. Define simple slash commands under `## Commands`; document arguments, output, and failure behavior.
-5. Declare prerequisites and credits, and add examples for non-obvious workflows.
+4. Define simple slash commands under `## Commands`; document arguments, output, and failure behavior. Set `disable-model-invocation: true` when only the user should start the skill.
+5. Declare prerequisites and credits, and add examples for non-obvious workflows. Put evals and refresh procedures in `maintenance/<skill-name>/`.
 6. Update the root README catalog with the class, purpose, prerequisites, and install command.
 7. Validate locally, then test installation from the branch or commit with `npx skills add`.
 8. Commit the skill and catalog update together.
