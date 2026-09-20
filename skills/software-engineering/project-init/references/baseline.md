@@ -56,6 +56,10 @@ For multi-agent work, define task owner, allowed paths, expected result, validat
 and integration owner. Use isolated worktrees for concurrent writers and serialize shared
 file changes/integration. Do not equate roles with particular vendors. Validate delegated
 output before adopting it. Delegation remains subject to the user's permitted scope.
+When the project involves multi-harness workflows, cross-model subagents, or high-stakes deliveries,
+adopt the execution model in [orchestration-model.md](orchestration-model.md) and resolve the
+tier-to-model mapping from [model-catalog.md](model-catalog.md). Do not impose multi-harness
+ceremony on simple or single-agent projects where coordination costs exceed token savings.
 
 Use risk-based review: bounded work may use explicit self-review; high-risk security,
 unsafe/FFI changes, destructive data operations, and releases need qualified human acceptance

@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "snapshot_date": "2026-09-20",
+  "description": "Canonical catalog of AI models mapped to operational tiers (T1-T3) across Western and Chinese providers for engineering project initialization.",
+  "models": [
+    {
+      "id": "claude-3-5-haiku-20241022",
+      "name": "Claude 3.5 Haiku",
+      "provider": "Anthropic",
+      "origin": "western",
+      "tier": "T1",
+      "tier_name": "mechanical",
+      "context_tokens": 200000,
+      "pricing_per_1m": {
+        "input_usd": 0.80,
+        "output_usd": 4.00,
+        "cache_read_usd": 0.08
+      },
+      "recommended_roles": ["scout", "oracle"],
+      "strengths": "Fast context reading, high prompt-caching efficiency, structured inventory and extraction."
+    },
+    {
+      "id": "gpt-4o-mini",
+      "name": "GPT-4o mini",
+      "provider": "OpenAI",
+      "origin": "western",
+      "tier": "T1",
+      "tier_name": "mechanical",
+      "context_tokens": 128000,
+      "pricing_per_1m": {
+        "input_usd": 0.15,
+        "output_usd": 0.60,
+        "cache_read_usd": 0.075
+      },
+      "recommended_roles": ["scout"],
+      "strengths": "Ultra-low token cost, broad ecosystem tooling compatibility, high throughput batching."
+    },
+    {
+      "id": "gemini-2.0-flash",
+      "name": "Gemini 2.0 Flash",
+      "provider": "Google",
+      "origin": "western",
+      "tier": "T1",
+      "tier_name": "mechanical",
+      "context_tokens": 1048576,
+      "pricing_per_1m": {
+        "input_usd": 0.10,
+        "output_usd": 0.40,
+        "cache_read_usd": 0.025
+      },
+      "recommended_roles": ["scout"],
+      "strengths": "Massive 1M context window at low price, multi-file code scanning, minimal latency."
+    },
+    {
+      "id": "deepseek-chat",
+      "name": "DeepSeek V3 (Chat)",
+      "provider": "DeepSeek",
+      "origin": "chinese",
+      "tier": "T1",
+      "tier_name": "mechanical",
+      "context_tokens": 64000,
+      "pricing_per_1m": {
+        "input_usd": 0.14,
+        "output_usd": 0.28,
+        "cache_read_usd": 0.014
+      },
+      "recommended_roles": ["scout", "driver"],
+      "strengths": "Unbeatable token economy, strong coding fundamentals, low cache read cost."
+    },
+    {
+      "id": "qwen-turbo",
+      "name": "Qwen 2.5 Turbo",
+      "provider": "Alibaba Cloud",
+      "origin": "chinese",
+      "tier": "T1",
+      "tier_name": "mechanical",
+      "context_tokens": 1000000,
+      "pricing_per_1m": {
+        "input_usd": 0.05,
+        "output_usd": 0.20,
+        "cache_read_usd": 0.01
+      },
+      "recommended_roles": ["scout"],
+      "strengths": "1M context window at minimal cost, excellent multilingual and JSON schema compliance."
+    },
+    {
+      "id": "glm-4-flash",
+      "name": "GLM-4 Flash",
+      "provider": "Zhipu AI",
+      "origin": "chinese",
+      "tier": "T1",
+      "tier_name": "mechanical",
+      "context_tokens": 128000,
+      "pricing_per_1m": {
+        "input_usd": 0.01,
+        "output_usd": 0.01,
+        "cache_read_usd": 0.00
+      },
+      "recommended_roles": ["scout"],
+      "strengths": "Near-zero cost tier for auxiliary scans, background documentation parsing, and lint sorting."
+    },
+    {
+      "id": "claude-3-7-sonnet-20250219",
+      "name": "Claude 3.7 Sonnet",
+      "provider": "Anthropic",
+      "origin": "western",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 200000,
+      "pricing_per_1m": {
+        "input_usd": 3.00,
+        "output_usd": 15.00,
+        "cache_read_usd": 0.30
+      },
+      "recommended_roles": ["driver"],
+      "strengths": "Industry gold standard for direct code generation, unit test writing, and complex diff execution."
+    },
+    {
+      "id": "gpt-4o",
+      "name": "GPT-4o",
+      "provider": "OpenAI",
+      "origin": "western",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 128000,
+      "pricing_per_1m": {
+        "input_usd": 2.50,
+        "output_usd": 10.00,
+        "cache_read_usd": 1.25
+      },
+      "recommended_roles": ["driver"],
+      "strengths": "Stable function calling, robust multi-language implementation, mature tool use."
+    },
+    {
+      "id": "gemini-2.5-pro",
+      "name": "Gemini 2.5 Pro",
+      "provider": "Google",
+      "origin": "western",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 2097152,
+      "pricing_per_1m": {
+        "input_usd": 1.25,
+        "output_usd": 5.00,
+        "cache_read_usd": 0.31
+      },
+      "recommended_roles": ["driver", "scout"],
+      "strengths": "Huge 2M context for holistic refactoring across large codebases, rigorous type compliance."
+    },
+    {
+      "id": "qwen-2.5-coder-32b-instruct",
+      "name": "Qwen 2.5 Coder 32B",
+      "provider": "Alibaba Cloud",
+      "origin": "chinese",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 128000,
+      "pricing_per_1m": {
+        "input_usd": 0.20,
+        "output_usd": 0.60,
+        "cache_read_usd": 0.05
+      },
+      "recommended_roles": ["driver"],
+      "strengths": "Specialized open-weight coding architecture with exceptional completion quality per dollar."
+    },
+    {
+      "id": "moonshot-v1-128k",
+      "name": "Moonshot v1 (Kimi)",
+      "provider": "Moonshot AI",
+      "origin": "chinese",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 128000,
+      "pricing_per_1m": {
+        "input_usd": 0.80,
+        "output_usd": 0.80,
+        "cache_read_usd": 0.10
+      },
+      "recommended_roles": ["driver"],
+      "strengths": "High long-context recall, consistent code style conformance, strong bilingual handling."
+    },
+    {
+      "id": "abab6.5s-chat",
+      "name": "MiniMax Text-01",
+      "provider": "MiniMax",
+      "origin": "chinese",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 245760,
+      "pricing_per_1m": {
+        "input_usd": 0.10,
+        "output_usd": 0.20,
+        "cache_read_usd": 0.02
+      },
+      "recommended_roles": ["driver"],
+      "strengths": "Extended 245k window, high token throughput for heavy multi-file diff tasks."
+    },
+    {
+      "id": "claude-3-7-sonnet-thinking",
+      "name": "Claude 3.7 Sonnet (Thinking)",
+      "provider": "Anthropic",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 200000,
+      "pricing_per_1m": {
+        "input_usd": 3.00,
+        "output_usd": 15.00,
+        "cache_read_usd": 0.30
+      },
+      "recommended_roles": ["reviewer", "arbiter"],
+      "strengths": "Adjustable extended reasoning, sharp adversarial critique, high invariant verification."
+    },
+    {
+      "id": "o1",
+      "name": "OpenAI o1",
+      "provider": "OpenAI",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 200000,
+      "pricing_per_1m": {
+        "input_usd": 15.00,
+        "output_usd": 60.00,
+        "cache_read_usd": 7.50
+      },
+      "recommended_roles": ["reviewer", "arbiter"],
+      "strengths": "Deep multi-step reasoning, mathematical invariants, race condition and concurrency audit."
+    },
+    {
+      "id": "o3-mini",
+      "name": "OpenAI o3-mini",
+      "provider": "OpenAI",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 200000,
+      "pricing_per_1m": {
+        "input_usd": 1.10,
+        "output_usd": 4.40,
+        "cache_read_usd": 0.55
+      },
+      "recommended_roles": ["reviewer"],
+      "strengths": "High reasoning density at standard coding prices; fast adversarial audit passes."
+    },
+    {
+      "id": "gemini-2.0-flash-thinking-exp",
+      "name": "Gemini 2.0 Flash Thinking",
+      "provider": "Google",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 1048576,
+      "pricing_per_1m": {
+        "input_usd": 0.00,
+        "output_usd": 0.00,
+        "cache_read_usd": 0.00
+      },
+      "recommended_roles": ["reviewer", "arbiter"],
+      "strengths": "Full-repository reasoning context window for cross-module architecture verification."
+    },
+    {
+      "id": "deepseek-reasoner",
+      "name": "DeepSeek R1",
+      "provider": "DeepSeek",
+      "origin": "chinese",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 64000,
+      "pricing_per_1m": {
+        "input_usd": 0.55,
+        "output_usd": 2.19,
+        "cache_read_usd": 0.14
+      },
+      "recommended_roles": ["reviewer", "arbiter"],
+      "strengths": "Benchmark-grade open reasoning model, exceptional at catching logic bugs and corner cases at modest cost."
+    },
+    {
+      "id": "qwq-32b",
+      "name": "QwQ-32B",
+      "provider": "Alibaba Cloud",
+      "origin": "chinese",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 128000,
+      "pricing_per_1m": {
+        "input_usd": 0.30,
+        "output_usd": 1.20,
+        "cache_read_usd": 0.05
+      },
+      "recommended_roles": ["reviewer"],
+      "strengths": "Cost-effective open-weights reasoning model for logical validation and protocol review."
+    },
+    {
+      "id": "kimi-k1.5",
+      "name": "Kimi k1.5",
+      "provider": "Moonshot AI",
+      "origin": "chinese",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 128000,
+      "pricing_per_1m": {
+        "input_usd": 1.00,
+        "output_usd": 3.00,
+        "cache_read_usd": 0.20
+      },
+      "recommended_roles": ["reviewer", "arbiter"],
+      "strengths": "Long-context reasoning model suited for reviewing multi-session architectural drift."
+    }
+  ]
+}

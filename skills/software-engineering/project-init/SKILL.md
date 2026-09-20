@@ -14,7 +14,7 @@ a hidden runtime dependency.
 ## Inputs
 
 Target directory; language(s); purpose or reference material if known; starter shape;
-agent harnesses; AI coding model; tooling/platform constraints; and licensing intent.
+agent harnesses and execution tiering preferences; AI coding model; tooling/platform constraints; and licensing intent.
 Use information already supplied or safely observable. Unknown scope is valid.
 
 ## Prerequisites
@@ -75,8 +75,9 @@ Ask only missing basics, in one compact initial exchange (up to three grouped pr
    (application, library, workspace, or instructions only)?
 2. **Purpose:** What should it do in one or two sentences? Scope unknown or a reference
    document is fine. Include a target platform only if it matters now.
-3. **Working model:** Which agent harnesses, and AI-assisted or fully AI-coded? Is the
-   project private or intended for open source, with a license already chosen?
+3. **Working model:** Which agent harnesses, and AI-assisted or fully AI-coded? Does
+   the project need multi-harness or tiered model orchestration? Is the project private
+   or intended for open source, with a license already chosen?
 
 These are wording examples, not a form to repeat verbatim. Combine or omit known fields.
 Ask a focused follow-up only when a missing answer changes the files or permissions now
@@ -98,6 +99,12 @@ non-mutating assumptions while continuing independent work.
 3. For language scaffolding or AFD, read the relevant sections of
    [tooling-and-harnesses.md](references/tooling-and-harnesses.md). Do not impose Rust,
    a crate topology, a particular harness roster, or a past tool version universally.
+   When multi-harness governance or model tiering is chosen, consult
+   [orchestration-model.md](references/orchestration-model.md), bind models using
+   [model-catalog.md](references/model-catalog.md), and format commands via
+   [harness-parameters.md](references/harness-parameters.md). Continuous maintenance follows
+   [model-catalog-refresh.md](checklists/model-catalog-refresh.md) and
+   [harness-parameters-refresh.md](checklists/harness-parameters-refresh.md).
 4. Recheck the intended writes against current state before applying. Create missing files
    or bounded edits; show conflicts. Repeat execution should be a no-op for unchanged content
    and preserve divergent user edits. Never use recursive cleanup as an initialization strategy.
@@ -108,7 +115,8 @@ non-mutating assumptions while continuing independent work.
 ## Outputs and constraints
 
 Typical outputs: `AGENTS.md`, `README.md`, appropriate ignore rules, engineering guidance,
-architecture overview/ADRs when useful, and minimal language scaffolding when requested.
+architecture overview/ADRs when useful, optional multi-harness execution policy and delivery declaration,
+and minimal language scaffolding when requested.
 Add licensing files only for an explicitly chosen license and known notice identity.
 Keep an initialization record of decisions, source provenance, changes, and verification;
 do not copy private reference documents or raw conversations into a publishable repository.

@@ -1,0 +1,256 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "snapshot_date": "2026-09-20",
+  "description": "Canonical parameters, CLI flags, agent primitives, and execution presets for major AI coding harnesses to ensure zero-guessing model selection.",
+  "harnesses": [
+    {
+      "id": "pi-dev",
+      "name": "Pi Coding Agent (pi.dev)",
+      "binary": "pi",
+      "install": "npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
+      "website": "https://pi.dev",
+      "flags": {
+        "model": "--model {model_id}",
+        "headless_prompt": "-p \"{prompt}\"",
+        "mode": "--mode text|json|rpc",
+        "restricted_tools": "--tools {comma_separated_tools}",
+        "exclude_tools": "--exclude-tools {tool_name}",
+        "system_prompt": "--system-prompt \"{text}\"",
+        "append_system_prompt": "--append-system-prompt \"{text}\""
+      },
+      "env_vars": {
+        "anthropic": "ANTHROPIC_API_KEY",
+        "openai": "OPENAI_API_KEY",
+        "deepseek": "DEEPSEEK_API_KEY"
+      },
+      "tier_presets": {
+        "T1": {
+          "role": "scout",
+          "model": "deepseek/deepseek-chat",
+          "command_template": "pi --model deepseek/deepseek-chat --tools read,grep,find,ls -p \"{prompt}\""
+        },
+        "T2": {
+          "role": "driver",
+          "model": "sonnet",
+          "command_template": "pi --model sonnet -p \"{prompt}\""
+        },
+        "T3": {
+          "role": "reviewer",
+          "model": "sonnet:high",
+          "command_template": "pi --model sonnet:high --tools read,grep,find,ls -p \"{prompt}\""
+        },
+        "T3_budget": {
+          "role": "reviewer",
+          "model": "deepseek/deepseek-r1",
+          "command_template": "pi --model deepseek/deepseek-r1 --tools read,grep,find,ls -p \"{prompt}\""
+        }
+      },
+      "prohibitions": [
+        "Always pass -p / --print in non-interactive sessions to avoid TUI terminal lockup.",
+        "Always use --tools read,grep,find,ls when running in reviewer or scout role to enforce read-only boundary."
+      ]
+    },
+    {
+      "id": "claude-code",
+      "name": "Claude Code CLI",
+      "binary": "claude",
+      "install": "npm install -g @anthropic-ai/claude-code",
+      "flags": {
+        "model": "--model {model_id}",
+        "headless_prompt": "-p \"{prompt}\"",
+        "stdin_prompt": "echo \"{prompt}\" | claude -p",
+        "auto_approve": "--permission-mode accept-all",
+        "output_format": "--output-format json|text"
+      },
+      "env_vars": {
+        "model": "ANTHROPIC_MODEL",
+        "thinking_budget": "MAX_THINKING_TOKENS"
+      },
+      "tier_presets": {
+        "T1": {
+          "role": "scout",
+          "model": "claude-3-5-haiku-20241022",
+          "command_template": "claude -p \"{prompt}\" --model claude-3-5-haiku-20241022 --permission-mode accept-all"
+        },
+        "T2": {
+          "role": "driver",
+          "model": "claude-3-7-sonnet-20250219",
+          "command_template": "claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode accept-all"
+        },
+        "T3": {
+          "role": "reviewer",
+          "model": "claude-3-7-sonnet-20250219",
+          "command_template": "MAX_THINKING_TOKENS=16000 claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode accept-all"
+        }
+      },
+      "prohibitions": [
+        "Never run without -p in non-interactive subagent sessions (blocks waiting for stdin).",
+        "Do not pass --temperature flags (unsupported on Claude Code CLI)."
+      ]
+    },
+    {
+      "id": "aider",
+      "name": "Aider CLI",
+      "binary": "aider",
+      "install": "pip install aider-chat",
+      "flags": {
+        "model": "--model {model_id}",
+        "reasoning_effort": "--reasoning-effort {low|medium|high}",
+        "thinking_tokens": "--thinking-tokens {tokens}",
+        "headless_prompt": "--message \"{prompt}\"",
+        "prompt_file": "--message-file {file_path}",
+        "auto_approve": "--yes --no-auto-commits",
+        "architect_mode": "--architect --model {reasoning_model} --editor-model {coding_model}"
+      },
+      "tier_presets": {
+        "T1": {
+          "role": "scout",
+          "model": "deepseek/deepseek-chat",
+          "command_template": "aider --model deepseek/deepseek-chat --message \"{prompt}\" --yes --no-auto-commits --read-only"
+        },
+        "T2": {
+          "role": "driver",
+          "model": "claude-3-7-sonnet-20250219",
+          "command_template": "aider --model claude-3-7-sonnet-20250219 --message \"{prompt}\" --yes --no-auto-commits"
+        },
+        "T3": {
+          "role": "reviewer",
+          "model": "openrouter/deepseek/deepseek-r1",
+          "command_template": "aider --model openrouter/deepseek/deepseek-r1 --reasoning-effort high --message \"{prompt}\" --yes --no-auto-commits --read-only"
+        }
+      },
+      "prohibitions": [
+        "Always include --yes in scripts to prevent blocking interactive commit/git prompts.",
+        "Include --no-auto-commits when running inside task-owned delivery loops."
+      ]
+    },
+    {
+      "id": "opencode-codex",
+      "name": "OpenCode / Codex CLI",
+      "binary": "opencode",
+      "flags": {
+        "model": "--model {model_id}",
+        "run_file": "run -f {file_path}",
+        "headless": "--headless",
+        "auto_approve": "--auto-approve"
+      },
+      "env_vars": {
+        "model": "OPENCODE_MODEL",
+        "openai_model": "OPENAI_MODEL"
+      },
+      "tier_presets": {
+        "T1": {
+          "role": "scout",
+          "model": "gpt-4o-mini",
+          "command_template": "opencode run -f {prompt_file} --model gpt-4o-mini --headless --auto-approve"
+        },
+        "T2": {
+          "role": "driver",
+          "model": "gpt-4o",
+          "command_template": "opencode run -f {prompt_file} --model gpt-4o --headless --auto-approve"
+        },
+        "T3": {
+          "role": "reviewer",
+          "model": "o3-mini",
+          "command_template": "opencode run -f {prompt_file} --model o3-mini --headless --auto-approve"
+        }
+      },
+      "prohibitions": [
+        "Never run without --headless in unattended automation."
+      ]
+    },
+    {
+      "id": "cline-roo",
+      "name": "Cline / Roo-Code Config",
+      "type": "configuration_file",
+      "config_path": ".roomodes or .cline/config.json",
+      "schema_keys": {
+        "provider": "apiProvider ('anthropic' | 'openrouter' | 'deepseek' | 'openai' | 'gemini')",
+        "model_id": "apiModelId (exact model string)",
+        "thinking_budget": "thinkingBudget (integer tokens)",
+        "temperature": "temperature (float 0.0 - 1.0)",
+        "auto_approve": "autoApprove (array of permissions)"
+      },
+      "tier_presets": {
+        "T1": {
+          "role": "scout",
+          "config_snippet": {
+            "apiProvider": "deepseek",
+            "apiModelId": "deepseek-chat",
+            "autoApprove": ["read", "command"]
+          }
+        },
+        "T2": {
+          "role": "driver",
+          "config_snippet": {
+            "apiProvider": "anthropic",
+            "apiModelId": "claude-3-7-sonnet-20250219",
+            "autoApprove": ["read", "write", "command"]
+          }
+        },
+        "T3": {
+          "role": "reviewer",
+          "config_snippet": {
+            "apiProvider": "deepseek",
+            "apiModelId": "deepseek-reasoner",
+            "autoApprove": ["read"]
+          }
+        }
+      },
+      "prohibitions": [
+        "Do not set temperature for deepseek-reasoner or thinking models in config."
+      ]
+    },
+    {
+      "id": "antigravity-subagent",
+      "name": "Antigravity Agent Primitive (invoke_subagent)",
+      "type": "agent_primitive",
+      "primitive_name": "invoke_subagent",
+      "allowed_model_values": ["flash_lite", "flash", "pro", "inherit"],
+      "tier_presets": {
+        "T1": {
+          "role": "scout",
+          "model_arg": "flash_lite",
+          "example_call": "invoke_subagent(Subagents=[{'TypeName': 'research', 'Role': 'Codebase Scout', 'Model': 'flash_lite', 'Prompt': '...'}])"
+        },
+        "T2": {
+          "role": "driver",
+          "model_arg": "flash",
+          "example_call": "invoke_subagent(Subagents=[{'TypeName': 'self', 'Role': 'Feature Driver', 'Model': 'flash', 'Prompt': '...'}])"
+        },
+        "T3": {
+          "role": "reviewer",
+          "model_arg": "pro",
+          "example_call": "invoke_subagent(Subagents=[{'TypeName': 'self', 'Role': 'Adversarial Reviewer', 'Model': 'pro', 'Prompt': '...'}])"
+        }
+      },
+      "prohibitions": [
+        "Do not pass external model IDs (e.g. 'claude-3-7-sonnet' or 'gpt-4o') to invoke_subagent; use only 'flash_lite', 'flash', 'pro', or 'inherit'."
+      ]
+    },
+    {
+      "id": "direct-api",
+      "name": "Direct Provider API Request Parameters",
+      "type": "api",
+      "rules": [
+        {
+          "provider": "anthropic",
+          "rule": "When thinking is enabled ({'type': 'enabled', 'budget_tokens': N}), temperature MUST NOT be set or must be exactly 1.0. Any other temperature returns HTTP 400."
+        },
+        {
+          "provider": "openai",
+          "rule": "For reasoning models (o1, o3-mini), do NOT send temperature, top_p, or presence_penalty. Use reasoning_effort ('low' | 'medium' | 'high')."
+        },
+        {
+          "provider": "deepseek",
+          "rule": "For deepseek-reasoner (R1), temperature is fixed by the provider. Do not attempt to override temperature. For deepseek-chat, use temperature=0.0 for deterministic coding."
+        },
+        {
+          "provider": "google",
+          "rule": "For gemini-2.0-flash-thinking-exp, set thinkingConfig in generationConfig. Pass temperature=0.0 for deterministic code checks."
+        }
+      ]
+    }
+  ]
+}
