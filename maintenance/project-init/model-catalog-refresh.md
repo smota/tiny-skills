@@ -7,31 +7,38 @@ Maintain the freshness, price accuracy, and tier classification of `maintenance/
 ## Triggers
 
 1. **Scheduled review:** Quarterly or whenever `refresh_model_catalog.py --check-staleness` lists a model as unverified or verified more than 90 days ago.
-2. **Market events:** Major model family release (Anthropic Claude, OpenAI, Google Gemini, DeepSeek, Alibaba Qwen, Moonshot, Zhipu, MiniMax), major price reductions, or prompt-caching rate shifts.
-3. **Discontinued APIs:** Deprecation or retirement of snapshot dates and model identifiers.
+2. **Market events:** Major model family release from Anthropic, OpenAI, Google, DeepSeek, or Alibaba (Qwen), major price reductions, promotions ending, or prompt-caching rate shifts.
+3. **Discontinued APIs:** Deprecation or retirement of model identifiers. Rows record retirement dates in their notes (for example Claude Haiku 4.5, not sooner than 2026-10-15).
 
 ## Primary Verification Sources
 
-Always check official provider pricing and documentation. Never infer rates or rely on memorized numbers:
+Take rates, context windows, and identifiers from the provider's own pages. Rely on the page, never on memory:
 
-| Provider | Authoritative Verification Surface |
-|---|---|
-| **Anthropic** | Anthropic API Pricing (`anthropic.com/pricing`) and API Model Overview docs |
-| **OpenAI** | OpenAI API Pricing (`openai.com/api/pricing`) and Platform Models index |
-| **Google** | Google AI Studio Pricing (`ai.google.dev/pricing`) and Vertex AI Model Reference |
-| **DeepSeek** | DeepSeek Open Platform Pricing (`platform.deepseek.com/api-docs/pricing`) |
-| **Alibaba Cloud** | DashScope Model Pricing (`help.aliyun.com/document_detail/2712581.html`) |
-| **Moonshot AI** | Moonshot Open Platform Pricing (`platform.moonshot.cn/docs/pricing`) |
-| **Zhipu AI** | BigModel Open Platform Pricing (`open.bigmodel.cn/pricing`) |
-| **MiniMax** | MiniMax Open Platform Pricing (`platform.minimaxi.com/document/pricing`) |
+| Provider | Pricing | Models and limits |
+|---|---|---|
+| **Anthropic** | `https://platform.claude.com/docs/en/about-claude/pricing` | `https://platform.claude.com/docs/en/models/overview` |
+| **OpenAI** | `https://developers.openai.com/api/docs/pricing` | `https://developers.openai.com/api/docs/models` |
+| **Google** | `https://ai.google.dev/gemini-api/docs/pricing` | `https://ai.google.dev/gemini-api/docs/models/<model-id>` (input and output token limits) |
+| **DeepSeek** | `https://api-docs.deepseek.com/quick_start/pricing` | the same page, plus the release notes under `https://api-docs.deepseek.com/news/` |
+| **Alibaba Cloud (Qwen)** | `https://www.alibabacloud.com/help/en/model-studio/model-pricing` (Singapore/International) | `https://www.alibabacloud.com/help/en/model-studio/<model-slug>` (for example `qwen3-8-max`) |
+
+`pi --list-models` and `claude --help` are useful cross-checks for identifiers and aliases on the providers configured on the machine, but they carry no prices.
+
+## Verification Rule
+
+Set `verified_at` on a row only when the provider's page states its price and context window in a verbatim table, or in two independent reads that agree. Leave it `null` for a row read once, and say why in its notes. For every row record:
+
+- `sources`: the provider URLs used.
+- `notes`: price tiers by prompt length, promotions with their end dates, peak and off-peak rates, preview status, retirement dates, and any figure two reads disagreed on. Store `null` for a cache price the provider did not state consistently.
+- Pairings reference catalog model ids and harness ids, and use different harnesses for driver and reviewer. The script checks this.
 
 ## Classification Rules for Tiers
 
 Tier meanings are defined once, in `skills/software-engineering/project-init/assets/execution-policy.template.md`. When adding or reclassifying a model, apply these criteria:
 
-- **T1 (`mechanical`):** High tokens/sec, low input cost ($ < 1.00 per 1M), large context window, fast extraction. Primary roles: `scout`, `oracle` (assisted).
+- **T1 (`mechanical`):** High tokens/sec, input cost at or below $1.00 per 1M, large context window, fast extraction. Primary roles: `scout`, `oracle` (assisted).
 - **T2 (`standard`):** Proven coding capability, high adherence to formatting/contracts, multi-file diff reliability. Primary role: `driver`.
-- **T3 (`judgment`):** Dedicated reasoning/thinking models (o1, o3-mini, Claude Thinking, DeepSeek R1, QwQ), capable of identifying subtle race conditions, contract violations, and adversarial failure modes. Primary roles: `reviewer`, `arbiter`.
+- **T3 (`judgment`):** Models the provider positions for demanding reasoning or long-horizon agentic work, capable of identifying subtle race conditions, contract violations, and adversarial failure modes. Primary roles: `reviewer`, `arbiter`. When the provider gives no positioning, say in the row's notes that the tier is a judgment.
 
 ## Execution Procedure
 

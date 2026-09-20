@@ -1,330 +1,467 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "version": "1.0.0",
-  "description": "Canonical catalog of AI models mapped to operational tiers (T1-T3) across Western and Chinese providers for engineering project initialization.",
+  "version": "2.0.0",
+  "description": "Catalog of current Anthropic, OpenAI, Google, DeepSeek, and Alibaba (Qwen) models mapped to operational tiers (T1-T3), each row checked against the provider's own pages.",
   "models": [
     {
-      "id": "claude-3-5-haiku-20241022",
-      "name": "Claude 3.5 Haiku",
+      "id": "claude-haiku-4-5-20251001",
+      "name": "Claude Haiku 4.5",
       "provider": "Anthropic",
       "origin": "western",
       "tier": "T1",
       "tier_name": "mechanical",
       "context_tokens": 200000,
       "pricing_per_1m": {
-        "input_usd": 0.80,
-        "output_usd": 4.00,
-        "cache_read_usd": 0.08
+        "input_usd": 1.0,
+        "output_usd": 5.0,
+        "cache_read_usd": 0.1
       },
-      "recommended_roles": ["scout", "oracle"],
-      "strengths": "Fast context reading, high prompt-caching efficiency, structured inventory and extraction.",
-      "verified_at": null
+      "recommended_roles": [
+        "scout",
+        "oracle"
+      ],
+      "strengths": "Fastest current Claude model with near-frontier intelligence; extended thinking; 64K max output.",
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/overview"
+      ],
+      "notes": [
+        "Retirement is not sooner than 2026-10-15 (Anthropic's stated commitment); plan a replacement for T1 use.",
+        "The alias haiku did not resolve to Haiku when tested with Claude Code; use the full id."
+      ],
+      "verified_at": "2026-09-20"
     },
     {
-      "id": "gpt-4o-mini",
-      "name": "GPT-4o mini",
+      "id": "claude-sonnet-5",
+      "name": "Claude Sonnet 5",
+      "provider": "Anthropic",
+      "origin": "western",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 1000000,
+      "pricing_per_1m": {
+        "input_usd": 2.0,
+        "output_usd": 10.0,
+        "cache_read_usd": 0.2
+      },
+      "recommended_roles": [
+        "driver"
+      ],
+      "strengths": "Best combination of speed and intelligence; adaptive thinking; 128K max output.",
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/overview"
+      ],
+      "notes": [
+        "$2/$10 was introductory pricing and is now the standard price; the planned increase to $3/$15 will not occur.",
+        "Claude 4.7 and later use a tokenizer that yields about 30% more tokens for the same text than Sonnet 4.6 and earlier, so per-task cost differs from the per-token price."
+      ],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "claude-opus-5",
+      "name": "Claude Opus 5",
+      "provider": "Anthropic",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 1000000,
+      "pricing_per_1m": {
+        "input_usd": 5.0,
+        "output_usd": 25.0,
+        "cache_read_usd": 0.5
+      },
+      "recommended_roles": [
+        "reviewer",
+        "arbiter"
+      ],
+      "strengths": "Complex agentic coding and enterprise work; Anthropic's suggested starting model for most workloads; adaptive thinking; 128K max output.",
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/overview"
+      ],
+      "notes": [
+        "Claude 4.7 and later use a tokenizer that yields about 30% more tokens for the same text than Sonnet 4.6 and earlier, so per-task cost differs from the per-token price."
+      ],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "claude-fable-5-1",
+      "name": "Claude Fable 5.1",
+      "provider": "Anthropic",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 1000000,
+      "pricing_per_1m": {
+        "input_usd": 10.0,
+        "output_usd": 50.0,
+        "cache_read_usd": 0.25
+      },
+      "recommended_roles": [
+        "arbiter",
+        "reviewer"
+      ],
+      "strengths": "Demanding reasoning and long-horizon agentic work; adaptive thinking always on; slower than Opus 5; 128K max output.",
+      "sources": [
+        "https://platform.claude.com/docs/en/about-claude/pricing",
+        "https://platform.claude.com/docs/en/models/overview"
+      ],
+      "notes": [
+        "Cache hits are priced at 0.025x the base input price on this model, against 0.1x on the others.",
+        "Claude 4.7 and later use a tokenizer that yields about 30% more tokens for the same text than Sonnet 4.6 and earlier, so per-task cost differs from the per-token price."
+      ],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "name": "GPT-5.6 Luna",
       "provider": "OpenAI",
       "origin": "western",
       "tier": "T1",
       "tier_name": "mechanical",
-      "context_tokens": 128000,
+      "context_tokens": 1050000,
       "pricing_per_1m": {
-        "input_usd": 0.15,
-        "output_usd": 0.60,
-        "cache_read_usd": 0.075
+        "input_usd": 0.2,
+        "output_usd": 1.2,
+        "cache_read_usd": 0.02
       },
-      "recommended_roles": ["scout"],
-      "strengths": "Ultra-low token cost, broad ecosystem tooling compatibility, high throughput batching.",
-      "verified_at": null
+      "recommended_roles": [
+        "scout",
+        "oracle"
+      ],
+      "strengths": "GPT-5.6 model optimized for cost-sensitive workloads; 128K max output.",
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models"
+      ],
+      "notes": [
+        "Regional processing (data residency) endpoints carry a 10% uplift for models released on or after 2026-03-05."
+      ],
+      "verified_at": "2026-09-20"
     },
     {
-      "id": "gemini-2.0-flash",
-      "name": "Gemini 2.0 Flash",
+      "id": "gpt-5.6-terra",
+      "name": "GPT-5.6 Terra",
+      "provider": "OpenAI",
+      "origin": "western",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 1050000,
+      "pricing_per_1m": {
+        "input_usd": 2.0,
+        "output_usd": 12.0,
+        "cache_read_usd": 0.2
+      },
+      "recommended_roles": [
+        "driver"
+      ],
+      "strengths": "GPT-5.6 model that balances intelligence and cost; 128K max output.",
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models"
+      ],
+      "notes": [],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "name": "GPT-5.6 Sol",
+      "provider": "OpenAI",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 1050000,
+      "pricing_per_1m": {
+        "input_usd": 4.0,
+        "output_usd": 20.0,
+        "cache_read_usd": 0.4
+      },
+      "recommended_roles": [
+        "reviewer"
+      ],
+      "strengths": "Flagship model for complex professional work (alias gpt-5.6); 128K max output.",
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models"
+      ],
+      "notes": [],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "gpt-6-astra",
+      "name": "GPT-6 Astra",
+      "provider": "OpenAI",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 1050000,
+      "pricing_per_1m": {
+        "input_usd": 10.0,
+        "output_usd": 50.0,
+        "cache_read_usd": 1.0
+      },
+      "recommended_roles": [
+        "arbiter",
+        "reviewer"
+      ],
+      "strengths": "OpenAI's most capable model, built for the hardest end-to-end work; 128K max output.",
+      "sources": [
+        "https://developers.openai.com/api/docs/pricing",
+        "https://developers.openai.com/api/docs/models"
+      ],
+      "notes": [],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "gemini-3.5-flash-lite",
+      "name": "Gemini 3.5 Flash-Lite",
       "provider": "Google",
       "origin": "western",
       "tier": "T1",
       "tier_name": "mechanical",
       "context_tokens": 1048576,
       "pricing_per_1m": {
-        "input_usd": 0.10,
-        "output_usd": 0.40,
-        "cache_read_usd": 0.025
+        "input_usd": 0.3,
+        "output_usd": 2.5,
+        "cache_read_usd": null
       },
-      "recommended_roles": ["scout"],
-      "strengths": "Massive 1M context window at low price, multi-file code scanning, minimal latency.",
-      "verified_at": null
+      "recommended_roles": [
+        "scout"
+      ],
+      "strengths": "Low-latency, cost-effective multimodal model for high-throughput subagent tasks and document parsing; stable; 65,536 max output.",
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/pricing",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite"
+      ],
+      "notes": [
+        "The context-caching price read as $0.03 on one pass of the pricing page and as not available on another; it is left unrecorded."
+      ],
+      "verified_at": "2026-09-20"
     },
     {
-      "id": "deepseek-chat",
-      "name": "DeepSeek V3 (Chat)",
+      "id": "gemini-3.8-flash",
+      "name": "Gemini 3.8 Flash",
+      "provider": "Google",
+      "origin": "western",
+      "tier": "T2",
+      "tier_name": "standard",
+      "context_tokens": 1048576,
+      "pricing_per_1m": {
+        "input_usd": 0.75,
+        "output_usd": 3.75,
+        "cache_read_usd": 0.075
+      },
+      "recommended_roles": [
+        "driver"
+      ],
+      "strengths": "Most intelligent Flash model, engineered for long-horizon software engineering, agents, and enterprise workflows; stable; 65,536 max output.",
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/pricing",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash"
+      ],
+      "notes": [
+        "These prices apply through 2026-12-31. From 2027-01-01 the page lists input $1.50, output $7.50, and context caching $0.15."
+      ],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "name": "Gemini 3.1 Pro (Preview)",
+      "provider": "Google",
+      "origin": "western",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 1048576,
+      "pricing_per_1m": {
+        "input_usd": 2.0,
+        "output_usd": 12.0,
+        "cache_read_usd": 0.2
+      },
+      "recommended_roles": [
+        "reviewer"
+      ],
+      "strengths": "Refines the Gemini 3 Pro series with better thinking, token efficiency, and factual consistency for software engineering and agentic workflows; preview status; 65,536 max output.",
+      "sources": [
+        "https://ai.google.dev/gemini-api/docs/pricing",
+        "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-pro-preview"
+      ],
+      "notes": [
+        "Prices shown are for prompts up to 200k tokens. Above 200k: input $4.00, output $18.00, context caching $0.40.",
+        "Preview status: identifiers and prices can change before general availability."
+      ],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "deepseek-flash",
+      "name": "DeepSeek V4.1 Flash",
       "provider": "DeepSeek",
       "origin": "chinese",
       "tier": "T1",
       "tier_name": "mechanical",
-      "context_tokens": 64000,
+      "context_tokens": 1000000,
       "pricing_per_1m": {
-        "input_usd": 0.14,
-        "output_usd": 0.28,
-        "cache_read_usd": 0.014
+        "input_usd": 0.3,
+        "output_usd": 1.2,
+        "cache_read_usd": 0.006
       },
-      "recommended_roles": ["scout", "driver"],
-      "strengths": "Unbeatable token economy, strong coding fundamentals, low cache read cost.",
-      "verified_at": null
+      "recommended_roles": [
+        "scout"
+      ],
+      "strengths": "1M context and up to 384K output; supports non-thinking and thinking (default) modes.",
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news260424/"
+      ],
+      "notes": [
+        "Peak rates are shown; off-peak rates are half. Peak hours are 01:00-04:00 and 06:00-10:00 UTC, Monday to Friday, excluding Chinese public holidays.",
+        "The retired names deepseek-v4-flash and deepseek-v4-flash-vision-exp are still accepted and served by this model at the Flash price."
+      ],
+      "verified_at": "2026-09-20"
     },
     {
-      "id": "qwen-turbo",
-      "name": "Qwen 2.5 Turbo",
+      "id": "deepseek-v4-pro",
+      "name": "DeepSeek V4 Pro",
+      "provider": "DeepSeek",
+      "origin": "chinese",
+      "tier": "T3",
+      "tier_name": "judgment",
+      "context_tokens": 1000000,
+      "pricing_per_1m": {
+        "input_usd": 1.32,
+        "output_usd": 3.96,
+        "cache_read_usd": 0.044
+      },
+      "recommended_roles": [
+        "reviewer"
+      ],
+      "strengths": "Larger of the two V4 models (1.6T total, 49B active parameters); 1M context and up to 384K output; thinking mode on by default.",
+      "sources": [
+        "https://api-docs.deepseek.com/quick_start/pricing",
+        "https://api-docs.deepseek.com/news/news260424/"
+      ],
+      "notes": [
+        "Peak rates are shown; off-peak rates are half (same peak hours as deepseek-flash).",
+        "The tier is this catalog's judgment: DeepSeek's pages give no positioning statement for the model."
+      ],
+      "verified_at": "2026-09-20"
+    },
+    {
+      "id": "qwen3.8-flash",
+      "name": "Qwen3.8 Flash",
       "provider": "Alibaba Cloud",
       "origin": "chinese",
       "tier": "T1",
       "tier_name": "mechanical",
       "context_tokens": 1000000,
       "pricing_per_1m": {
-        "input_usd": 0.05,
-        "output_usd": 0.20,
-        "cache_read_usd": 0.01
+        "input_usd": 0.15,
+        "output_usd": 0.47,
+        "cache_read_usd": null
       },
-      "recommended_roles": ["scout"],
-      "strengths": "1M context window at minimal cost, excellent multilingual and JSON schema compliance.",
-      "verified_at": null
+      "recommended_roles": [
+        "scout"
+      ],
+      "strengths": "Fast multimodal Qwen model; thinking mode supported; 131,072 max output.",
+      "sources": [
+        "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+        "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-flash"
+      ],
+      "notes": [
+        "Singapore/International pricing. A context-caching discount exists but its rate was not stated, so the cache price is unrecorded."
+      ],
+      "verified_at": "2026-09-20"
     },
     {
-      "id": "glm-4-flash",
-      "name": "GLM-4 Flash",
-      "provider": "Zhipu AI",
-      "origin": "chinese",
-      "tier": "T1",
-      "tier_name": "mechanical",
-      "context_tokens": 128000,
-      "pricing_per_1m": {
-        "input_usd": 0.01,
-        "output_usd": 0.01,
-        "cache_read_usd": 0.00
-      },
-      "recommended_roles": ["scout"],
-      "strengths": "Near-zero cost tier for auxiliary scans, background documentation parsing, and lint sorting.",
-      "verified_at": null
-    },
-    {
-      "id": "claude-3-7-sonnet-20250219",
-      "name": "Claude 3.7 Sonnet",
-      "provider": "Anthropic",
-      "origin": "western",
-      "tier": "T2",
-      "tier_name": "standard",
-      "context_tokens": 200000,
-      "pricing_per_1m": {
-        "input_usd": 3.00,
-        "output_usd": 15.00,
-        "cache_read_usd": 0.30
-      },
-      "recommended_roles": ["driver"],
-      "strengths": "Industry gold standard for direct code generation, unit test writing, and complex diff execution.",
-      "verified_at": null
-    },
-    {
-      "id": "gpt-4o",
-      "name": "GPT-4o",
-      "provider": "OpenAI",
-      "origin": "western",
-      "tier": "T2",
-      "tier_name": "standard",
-      "context_tokens": 128000,
-      "pricing_per_1m": {
-        "input_usd": 2.50,
-        "output_usd": 10.00,
-        "cache_read_usd": 1.25
-      },
-      "recommended_roles": ["driver"],
-      "strengths": "Stable function calling, robust multi-language implementation, mature tool use.",
-      "verified_at": null
-    },
-    {
-      "id": "gemini-2.5-pro",
-      "name": "Gemini 2.5 Pro",
-      "provider": "Google",
-      "origin": "western",
-      "tier": "T2",
-      "tier_name": "standard",
-      "context_tokens": 2097152,
-      "pricing_per_1m": {
-        "input_usd": 1.25,
-        "output_usd": 5.00,
-        "cache_read_usd": 0.31
-      },
-      "recommended_roles": ["driver", "scout"],
-      "strengths": "Huge 2M context for holistic refactoring across large codebases, rigorous type compliance.",
-      "verified_at": null
-    },
-    {
-      "id": "qwen-2.5-coder-32b-instruct",
-      "name": "Qwen 2.5 Coder 32B",
+      "id": "qwen3.7-plus",
+      "name": "Qwen3.7 Plus",
       "provider": "Alibaba Cloud",
       "origin": "chinese",
       "tier": "T2",
       "tier_name": "standard",
-      "context_tokens": 128000,
+      "context_tokens": 1000000,
       "pricing_per_1m": {
-        "input_usd": 0.20,
-        "output_usd": 0.60,
-        "cache_read_usd": 0.05
+        "input_usd": 0.4,
+        "output_usd": 1.6,
+        "cache_read_usd": null
       },
-      "recommended_roles": ["driver"],
-      "strengths": "Specialized open-weight coding architecture with exceptional completion quality per dollar.",
+      "recommended_roles": [
+        "driver"
+      ],
+      "strengths": "Cost-effective Plus model with agent-level intelligence for coding, tool use, and productivity workflows; thinking mode supported; 131,072 max output.",
+      "sources": [
+        "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+        "https://www.alibabacloud.com/help/en/model-studio/qwen3-7-plus"
+      ],
+      "notes": [
+        "Singapore/International pricing. Read once only: the $0.40 input price applies to 0-256K tokens, and the page also shows higher tiers and a limited-time 20% discount that were not resolved. Verify before budgeting."
+      ],
       "verified_at": null
     },
     {
-      "id": "moonshot-v1-128k",
-      "name": "Moonshot v1 (Kimi)",
-      "provider": "Moonshot AI",
-      "origin": "chinese",
-      "tier": "T2",
-      "tier_name": "standard",
-      "context_tokens": 128000,
-      "pricing_per_1m": {
-        "input_usd": 0.80,
-        "output_usd": 0.80,
-        "cache_read_usd": 0.10
-      },
-      "recommended_roles": ["driver"],
-      "strengths": "High long-context recall, consistent code style conformance, strong bilingual handling.",
-      "verified_at": null
-    },
-    {
-      "id": "abab6.5s-chat",
-      "name": "MiniMax Text-01",
-      "provider": "MiniMax",
-      "origin": "chinese",
-      "tier": "T2",
-      "tier_name": "standard",
-      "context_tokens": 245760,
-      "pricing_per_1m": {
-        "input_usd": 0.10,
-        "output_usd": 0.20,
-        "cache_read_usd": 0.02
-      },
-      "recommended_roles": ["driver"],
-      "strengths": "Extended 245k window, high token throughput for heavy multi-file diff tasks.",
-      "verified_at": null
-    },
-    {
-      "id": "claude-3-7-sonnet-thinking",
-      "name": "Claude 3.7 Sonnet (Thinking)",
-      "provider": "Anthropic",
-      "origin": "western",
-      "tier": "T3",
-      "tier_name": "judgment",
-      "context_tokens": 200000,
-      "pricing_per_1m": {
-        "input_usd": 3.00,
-        "output_usd": 15.00,
-        "cache_read_usd": 0.30
-      },
-      "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Adjustable extended reasoning, sharp adversarial critique, high invariant verification.",
-      "verified_at": null
-    },
-    {
-      "id": "o1",
-      "name": "OpenAI o1",
-      "provider": "OpenAI",
-      "origin": "western",
-      "tier": "T3",
-      "tier_name": "judgment",
-      "context_tokens": 200000,
-      "pricing_per_1m": {
-        "input_usd": 15.00,
-        "output_usd": 60.00,
-        "cache_read_usd": 7.50
-      },
-      "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Deep multi-step reasoning, mathematical invariants, race condition and concurrency audit.",
-      "verified_at": null
-    },
-    {
-      "id": "o3-mini",
-      "name": "OpenAI o3-mini",
-      "provider": "OpenAI",
-      "origin": "western",
-      "tier": "T3",
-      "tier_name": "judgment",
-      "context_tokens": 200000,
-      "pricing_per_1m": {
-        "input_usd": 1.10,
-        "output_usd": 4.40,
-        "cache_read_usd": 0.55
-      },
-      "recommended_roles": ["reviewer"],
-      "strengths": "High reasoning density at standard coding prices; fast adversarial audit passes.",
-      "verified_at": null
-    },
-    {
-      "id": "gemini-2.0-flash-thinking-exp",
-      "name": "Gemini 2.0 Flash Thinking",
-      "provider": "Google",
-      "origin": "western",
-      "tier": "T3",
-      "tier_name": "judgment",
-      "context_tokens": 1048576,
-      "pricing_per_1m": {
-        "input_usd": 0.00,
-        "output_usd": 0.00,
-        "cache_read_usd": 0.00
-      },
-      "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Full-repository reasoning context window for cross-module architecture verification.",
-      "verified_at": null
-    },
-    {
-      "id": "deepseek-reasoner",
-      "name": "DeepSeek R1",
-      "provider": "DeepSeek",
-      "origin": "chinese",
-      "tier": "T3",
-      "tier_name": "judgment",
-      "context_tokens": 64000,
-      "pricing_per_1m": {
-        "input_usd": 0.55,
-        "output_usd": 2.19,
-        "cache_read_usd": 0.14
-      },
-      "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Benchmark-grade open reasoning model, exceptional at catching logic bugs and corner cases at modest cost.",
-      "verified_at": null
-    },
-    {
-      "id": "qwq-32b",
-      "name": "QwQ-32B",
+      "id": "qwen3.8-max",
+      "name": "Qwen3.8 Max",
       "provider": "Alibaba Cloud",
       "origin": "chinese",
       "tier": "T3",
       "tier_name": "judgment",
-      "context_tokens": 128000,
+      "context_tokens": 1000000,
       "pricing_per_1m": {
-        "input_usd": 0.30,
-        "output_usd": 1.20,
-        "cache_read_usd": 0.05
+        "input_usd": 2.0,
+        "output_usd": 6.0,
+        "cache_read_usd": null
       },
-      "recommended_roles": ["reviewer"],
-      "strengths": "Cost-effective open-weights reasoning model for logical validation and protocol review.",
-      "verified_at": null
+      "recommended_roles": [
+        "reviewer",
+        "arbiter"
+      ],
+      "strengths": "2.4-trillion-parameter MoE flagship with strong coding and office-productivity results; thinking mode supported; 131,072 max output.",
+      "sources": [
+        "https://www.alibabacloud.com/help/en/model-studio/model-pricing",
+        "https://www.alibabacloud.com/help/en/model-studio/qwen3-8-max"
+      ],
+      "notes": [
+        "Singapore/International pricing. A context-caching discount exists but its rate was not stated, so the cache price is unrecorded."
+      ],
+      "verified_at": "2026-09-20"
+    }
+  ],
+  "pairings": [
+    {
+      "strategy": "Claude drives, GPT reviews",
+      "driver": {
+        "harness": "claude-code",
+        "model": "claude-sonnet-5"
+      },
+      "reviewer": {
+        "harness": "codex",
+        "model": "gpt-5.6-sol"
+      },
+      "advantage": "Independent vendors and harnesses, so no shared context, prompts, or blind spots. Both CLIs were checked against the installed versions."
     },
     {
-      "id": "kimi-k1.5",
-      "name": "Kimi k1.5",
-      "provider": "Moonshot AI",
-      "origin": "chinese",
-      "tier": "T3",
-      "tier_name": "judgment",
-      "context_tokens": 128000,
-      "pricing_per_1m": {
-        "input_usd": 1.00,
-        "output_usd": 3.00,
-        "cache_read_usd": 0.20
+      "strategy": "GPT drives, Claude reviews",
+      "driver": {
+        "harness": "codex",
+        "model": "gpt-5.6-terra"
       },
-      "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Long-context reasoning model suited for reviewing multi-session architectural drift.",
-      "verified_at": null
+      "reviewer": {
+        "harness": "claude-code",
+        "model": "claude-opus-5"
+      },
+      "advantage": "The reverse of the first pairing; the reviewer runs read-only under --permission-mode plan."
+    },
+    {
+      "strategy": "Budget review",
+      "driver": {
+        "harness": "claude-code",
+        "model": "claude-sonnet-5"
+      },
+      "reviewer": {
+        "harness": "pi-dev",
+        "model": "deepseek-v4-pro"
+      },
+      "advantage": "Lowest-priced T3 reviewer in this catalog at peak rates. The pi DeepSeek preset ids are unchecked, so confirm the preset before relying on it."
     }
   ]
 }
