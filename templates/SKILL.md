@@ -1,21 +1,19 @@
 ---
 name: replace-with-skill-name
-description: Describe when this skill should be used and what it produces.
+description: Replace with a one-line summary. When the agent must reach this skill on its own, lead with the verb and list one trigger per distinct branch.
 category: software-engineering
+# disable-model-invocation: true   # uncomment when only the user starts this skill
 ---
 
 # Replace With Skill Name
 
 ## Purpose
 
-State one focused job for this independent agent.
+State one focused job.
 
 ## Behavior
 
-- Inspect user input.
-- Perform focused work.
-- Return concise, actionable output.
-- Never assume another skill, shared state, or repository-local service.
+1. **Replace with step name.** Describe what the agent does and state any constraint inside the step it limits. **Complete when:** a condition the agent can check.
 
 ## Prerequisites
 
@@ -33,13 +31,3 @@ List upstream skills, prompts, research, tools, or adaptations. Write `None` whe
 - **Action:** Describe steps agent performs.
 - **Output:** Describe response format and artifacts.
 - **Failure:** Explain validation and recovery behavior.
-
-## Constraints
-
-- Keep scope limited to this skill.
-- Ask for missing information instead of inventing it.
-- Do not expose secrets or silently perform destructive actions.
-
-## Examples
-
-Add short examples showing command usage and expected output.

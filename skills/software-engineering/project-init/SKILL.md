@@ -102,9 +102,7 @@ non-mutating assumptions while continuing independent work.
    When multi-harness governance or model tiering is chosen, consult
    [orchestration-model.md](references/orchestration-model.md), bind models using
    [model-catalog.md](references/model-catalog.md), and format commands via
-   [harness-parameters.md](references/harness-parameters.md). Continuous maintenance follows
-   [model-catalog-refresh.md](checklists/model-catalog-refresh.md) and
-   [harness-parameters-refresh.md](checklists/harness-parameters-refresh.md).
+   [harness-parameters.md](references/harness-parameters.md).
 4. Recheck the intended writes against current state before applying. Create missing files
    or bounded edits; show conflicts. Repeat execution should be a no-op for unchanged content
    and preserve divergent user edits. Never use recursive cleanup as an initialization strategy.
@@ -134,6 +132,3 @@ live discovery, or runtime behavior until those mechanisms exist and have been c
   and framework implementations are not redistributed or required by this skill.
 - Architecture Decision Records provide the decision-history pattern. The explicit
   decision/implementation lifecycle here comes from the Meshloop planning agreement.
-
-Maintainers can exercise the scenarios in [evals.md](checklists/evals.md) without invoking
-agents or mutating real projects; live testing requires its own permitted scope.

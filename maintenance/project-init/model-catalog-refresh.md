@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Maintain the freshness, price accuracy, and tier classification of `references/model-catalog.json` and its rendered companion `references/model-catalog.md` in the `project-init` skill.
+Maintain the freshness, price accuracy, and tier classification of `maintenance/project-init/model-catalog.json` and its rendered companion `skills/software-engineering/project-init/references/model-catalog.md`.
 
 ## Triggers
 
@@ -37,26 +37,26 @@ When adding or reclassifying a model, apply these criteria:
 
 1. **Check Staleness:**
    ```bash
-   python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --check-staleness
+   python maintenance/project-init/refresh_model_catalog.py --check-staleness
    ```
 
 2. **Update JSON Records:**
-   Edit `skills/software-engineering/project-init/references/model-catalog.json` directly or use helper flags:
+   Edit `maintenance/project-init/model-catalog.json` directly or use helper flags:
    ```bash
    # Quick price update example:
-   python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --update-price <model_id> <input_usd> <output_usd> [<cache_usd>]
+   python maintenance/project-init/refresh_model_catalog.py --update-price <model_id> <input_usd> <output_usd> [<cache_usd>]
    ```
 
 3. **Validate Catalog Integrity:**
    Ensure schema compliance, positive token windows and prices, valid roles, and unique IDs:
    ```bash
-   python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --validate
+   python maintenance/project-init/refresh_model_catalog.py --validate
    ```
 
 4. **Re-render Markdown Reference:**
    Regenerate `model-catalog.md`:
    ```bash
-   python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --render
+   python maintenance/project-init/refresh_model_catalog.py --render
    ```
 
 5. **Verify Outputs:**

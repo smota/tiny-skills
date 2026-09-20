@@ -2,12 +2,12 @@
 """
 Model Catalog and Harness Parameter Maintenance and Rendering Script
 
-Validates:
-    - `references/model-catalog.json`
-    - `references/harness-parameters.json`
-Renders:
-    - `references/model-catalog.md`
-    - `references/harness-parameters.md`
+Validates (next to this script):
+    - `model-catalog.json`
+    - `harness-parameters.json`
+Renders (into the project-init skill):
+    - `skills/software-engineering/project-init/references/model-catalog.md`
+    - `skills/software-engineering/project-init/references/harness-parameters.md`
 
 Usage:
     python refresh_model_catalog.py --render
@@ -23,12 +23,14 @@ import os
 import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-REFERENCES_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "references"))
+REFERENCES_DIR = os.path.normpath(
+    os.path.join(SCRIPT_DIR, "..", "..", "skills", "software-engineering", "project-init", "references")
+)
 
-MODELS_JSON_PATH = os.path.join(REFERENCES_DIR, "model-catalog.json")
+MODELS_JSON_PATH = os.path.join(SCRIPT_DIR, "model-catalog.json")
 MODELS_MD_PATH = os.path.join(REFERENCES_DIR, "model-catalog.md")
 
-HARNESS_JSON_PATH = os.path.join(REFERENCES_DIR, "harness-parameters.json")
+HARNESS_JSON_PATH = os.path.join(SCRIPT_DIR, "harness-parameters.json")
 HARNESS_MD_PATH = os.path.join(REFERENCES_DIR, "harness-parameters.md")
 
 VALID_TIERS = {"T1": "mechanical", "T2": "standard", "T3": "judgment"}
@@ -185,14 +187,6 @@ def render_models_markdown(data: dict) -> str:
         "| **Western Frontier** | Claude Code / Claude 3.7 Sonnet | Codex or Pi / OpenAI o1 or o3-mini | Full corporate independence; catches subtle logic defects. |",
         "| **Hybrid High-Yield** | Claude Code / Claude 3.7 Sonnet | Cline or Pi / DeepSeek R1 | High-capability implementation paired with low-cost open reasoning. |",
         "| **Budget Maximizer** | Pi or OpenCode / DeepSeek V3 | Pi (`--tools read,grep`) / DeepSeek R1 | 80–90% cost reduction with enforced read-only independent review. |",
-        "",
-        "## Updating this Catalog",
-        "",
-        "Follow [model-catalog-refresh.md](../checklists/model-catalog-refresh.md) to inspect primary vendor pricing pages and run:",
-        "",
-        "```bash",
-        "python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --render",
-        "```",
         ""
     ])
 
@@ -320,17 +314,6 @@ def render_harnesses_markdown(data: dict) -> str:
             for r in rules:
                 md_lines.append(f"- **{r['provider'].capitalize()}:** {r['rule']}")
             md_lines.append("")
-
-    md_lines.extend([
-        "## Continuous Refresh Protocol",
-        "",
-        "When harness CLIs bump versions or add flags, follow [harness-parameters-refresh.md](../checklists/harness-parameters-refresh.md) and run:",
-        "",
-        "```bash",
-        "python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --render",
-        "```",
-        ""
-    ])
 
     return "\n".join(md_lines)
 

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Maintain the accuracy, invocation flags, headless options, and parameter constraints in `references/harness-parameters.json` and its rendered companion `references/harness-parameters.md`.
+Maintain the accuracy, invocation flags, headless options, and parameter constraints in `maintenance/project-init/harness-parameters.json` and its rendered companion `skills/software-engineering/project-init/references/harness-parameters.md`.
 
 ## Triggers
 
@@ -27,7 +27,7 @@ Inspect the installed version of each CLI to verify available flags:
 
 1. **Check Staleness:**
    ```bash
-   python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --check-staleness
+   python maintenance/project-init/refresh_model_catalog.py --check-staleness
    ```
 
 2. **Probe Flag Changes:**
@@ -38,18 +38,18 @@ Inspect the installed version of each CLI to verify available flags:
    ```
 
 3. **Update JSON Schema Records:**
-   Edit `skills/software-engineering/project-init/references/harness-parameters.json` to update flags, environment variables, tier presets, or prohibitions.
+   Edit `maintenance/project-init/harness-parameters.json` to update flags, environment variables, tier presets, or prohibitions.
 
 4. **Validate Schema and Integrity:**
    Ensure valid JSON, unique IDs, valid role definitions, and no missing keys:
    ```bash
-   python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --validate
+   python maintenance/project-init/refresh_model_catalog.py --validate
    ```
 
 5. **Re-render Markdown Reference:**
    Regenerate `references/harness-parameters.md` deterministically:
    ```bash
-   python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --render
+   python maintenance/project-init/refresh_model_catalog.py --render
    ```
 
 6. **Inspect Diff and Commit:**

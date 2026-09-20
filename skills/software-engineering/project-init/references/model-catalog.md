@@ -62,11 +62,3 @@ Under **Mode A (Cross-Harness)**, the `driver` and `reviewer` must never share t
 | **Western Frontier** | Claude Code / Claude 3.7 Sonnet | Codex or Pi / OpenAI o1 or o3-mini | Full corporate independence; catches subtle logic defects. |
 | **Hybrid High-Yield** | Claude Code / Claude 3.7 Sonnet | Cline or Pi / DeepSeek R1 | High-capability implementation paired with low-cost open reasoning. |
 | **Budget Maximizer** | Pi or OpenCode / DeepSeek V3 | Pi (`--tools read,grep`) / DeepSeek R1 | 80–90% cost reduction with enforced read-only independent review. |
-
-## Updating this Catalog
-
-Follow [model-catalog-refresh.md](../checklists/model-catalog-refresh.md) to inspect primary vendor pricing pages and run:
-
-```bash
-python skills/software-engineering/project-init/scripts/refresh_model_catalog.py --render
-```

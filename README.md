@@ -94,6 +94,7 @@ prerequisites, outputs, and failure behavior.
 - **Self-contained:** skill instructions, references, examples, and command definitions live inside one skill directory.
 - **Independent:** no shared runtime, prompts, state, or cross-skill assumptions.
 - **Standard:** each skill exposes `SKILL.md` with standard frontmatter and can be consumed by compatible agent clients.
+- **Lean installs:** a skill directory holds only what agents read or run; evals and refresh procedures live in `maintenance/<skill-name>/`.
 - **Simple:** prefer small slash commands over frameworks or deployment infrastructure.
 - **Composable commands:** use explicit command sections when one skill offers multiple related slash commands.
 
@@ -120,6 +121,9 @@ templates/
 
 docs/
   authoring.md            # authoring and validation rules
+
+maintenance/
+  <skill-name>/           # maintainer-only evals, refresh procedures, generators
 ```
 
 ## Add skill
@@ -127,8 +131,8 @@ docs/
 1. Choose a class: `personal`, `research`, `writing`, or `software-engineering`.
 2. Copy `templates/SKILL.md` to `skills/<class>/<skill-name>/SKILL.md`.
 3. Keep all context needed by the agent inside that directory.
-4. Define simple slash commands under `## Commands`; document arguments, output, and failure behavior.
-5. Declare prerequisites and credits, and add examples for non-obvious workflows.
+4. Define simple slash commands under `## Commands`; document arguments, output, and failure behavior. Set `disable-model-invocation: true` when only the user should start the skill.
+5. Declare prerequisites and credits, and add examples for non-obvious workflows. Put evals and refresh procedures in `maintenance/<skill-name>/`.
 6. Update the root README catalog with the class, purpose, prerequisites, and install command.
 7. Validate locally, then test installation from the branch or commit with `npx skills add`.
 8. Commit the skill and catalog update together.
