@@ -1,6 +1,6 @@
 # Layer consolidation
 
-Use this reference for default, `consolidate`, `recursive`, and `verify` modes.
+Use this reference for the default, `consolidate`, and `verify` modes and their `recursive` and `guidance` variants.
 
 ## Discover the instruction topology
 
@@ -13,9 +13,8 @@ ignore conventions. Exclude version-control metadata, dependencies, virtual envi
 output, build artifacts, vendored trees, and any explicitly excluded scope. Report material exclusions.
 
 Candidate entry points include present or configured `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `CODEX.md`,
-`AGY.md`, `GROK.md`, `AGI.md`, `CLOUDS.md`, equivalent harness-specific files, and case variants. Also inspect
-instruction files named by harness configuration or explicit context pointers. Do not infer authority from
-the filename or create missing variants merely because their names are recognized.
+equivalent harness-specific files named by harness configuration or explicit context pointers, and case
+variants. Take authority from declarations, pointers, and scope, and leave missing variants uncreated.
 
 For each file record:
 

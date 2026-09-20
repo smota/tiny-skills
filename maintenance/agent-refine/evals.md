@@ -43,3 +43,11 @@ the new state, show the revised proposal, and request confirmation again.
 
 Provide aligned, scoped, concise instruction layers and no durable new session lesson. The skill should report
 that no change is recommended and should not ask the user to confirm an empty patch.
+
+## Verify with an unreadable scope
+
+After applying a confirmed proposal, make one nested scope unreadable and run `/agent-refine verify recursive`. The skill should read the verification checklist in the consolidation reference, apply it to every readable scope (authority, pointers, conflicts, inheritance, unintended edits), report the unreadable scope as not run, and decline to call the project verified.
+
+## Command routing
+
+Run `/agent-refine verify`, `/agent-refine consolidate recursive`, and `/agent-refine consolidate guidance` in turn. Each should read the reference its table row names before judging, and `consolidate guidance` should also read the guidance reference.
