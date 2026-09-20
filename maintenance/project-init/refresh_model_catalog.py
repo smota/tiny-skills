@@ -55,7 +55,7 @@ def load_json(path: str) -> dict:
 
 
 def save_json(data: dict, path: str) -> None:
-    with open(path, "w", encoding="utf-8") as f:
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
@@ -113,6 +113,8 @@ def validate_models(data: dict) -> list[str]:
         pricing = model.get("pricing_per_1m", {})
         for price_key in ("input_usd", "output_usd", "cache_read_usd"):
             val = pricing.get(price_key)
+            if price_key == "cache_read_usd" and val is None:
+                continue  # null = not offered, or not stated by the provider
             if val is None or not isinstance(val, (int, float)) or val < 0:
                 errors.append(f"Model '{mid}' pricing field '{price_key}' must be a non-negative number.")
 
@@ -127,16 +129,47 @@ def validate_models(data: dict) -> list[str]:
             errors.append(f"Model '{mid}' must have a non-empty 'strengths' description.")
 
         check_verified_at(f"Model '{mid}'", model, errors)
+        if model.get("verified_at") and not model.get("sources"):
+            errors.append(f"Model '{mid}' is verified but lists no 'sources' (provider URLs).")
+        notes = model.get("notes", [])
+        if not isinstance(notes, list) or not all(isinstance(n, str) for n in notes):
+            errors.append(f"Model '{mid}' notes must be a list of strings.")
 
+    errors.extend(validate_pairings(data, seen_ids))
+    return errors
+
+
+def validate_pairings(data: dict, model_ids: set) -> list[str]:
+    """Pairings reference catalog models and known harnesses, and never share a harness (Mode A)."""
+    errors = []
+    harness_ids = set()
+    if os.path.isfile(HARNESS_JSON_PATH):
+        harness_ids = {h.get("id") for h in load_json(HARNESS_JSON_PATH).get("harnesses", [])}
+    for idx, pairing in enumerate(data.get("pairings", [])):
+        label = f"Pairing '{pairing.get('strategy', idx)}'"
+        for side in ("driver", "reviewer"):
+            entry = pairing.get(side)
+            if not isinstance(entry, dict):
+                errors.append(f"{label} needs a '{side}' object with harness and model.")
+                continue
+            if entry.get("model") not in model_ids:
+                errors.append(f"{label} {side} model '{entry.get('model')}' is not in the catalog.")
+            if harness_ids and entry.get("harness") not in harness_ids:
+                errors.append(f"{label} {side} harness '{entry.get('harness')}' is not in harness-parameters.json.")
+        driver, reviewer = pairing.get("driver"), pairing.get("reviewer")
+        if isinstance(driver, dict) and isinstance(reviewer, dict) and driver.get("harness") == reviewer.get("harness"):
+            errors.append(f"{label} puts driver and reviewer in one harness; Mode A needs different harnesses.")
+        if not pairing.get("advantage"):
+            errors.append(f"{label} needs an 'advantage' statement.")
     return errors
 
 
 def format_price(val: float) -> str:
-    if val == 0:
-        return "$0.00"
-    if val < 0.01:
-        return f"${val:.3f}"
-    return f"${val:.2f}"
+    """Show every significant digit up to four decimals, and at least two ($0.075, $0.006, $5.00)."""
+    text = f"{val:.4f}".rstrip("0")
+    if len(text.split(".")[1]) < 2:
+        text = f"{val:.2f}"
+    return f"${text}"
 
 
 def format_context(ctx: int) -> str:
@@ -177,7 +210,8 @@ def render_models_markdown(data: dict) -> str:
             pricing = m.get("pricing_per_1m", {})
             in_p = format_price(pricing.get("input_usd", 0))
             out_p = format_price(pricing.get("output_usd", 0))
-            cache_p = format_price(pricing.get("cache_read_usd", 0))
+            cache_value = pricing.get("cache_read_usd")
+            cache_p = "n/a" if cache_value is None else format_price(cache_value)
             rates = f"{in_p} / {out_p}"
             ctx_str = format_context(m.get("context_tokens", 0))
             roles_str = ", ".join(f"`{r}`" for r in m.get("recommended_roles", []))
@@ -189,19 +223,31 @@ def render_models_markdown(data: dict) -> str:
 
         md_lines.append("")
 
-    md_lines.extend([
-        "## Recommended Pairing Strategy (Mode A)",
-        "",
-        "Under **Mode A (Cross-Harness)**, the `driver` and `reviewer` must never share the same harness or subagent lineage. Recommended high-yield pairings:",
-        "",
-        "| Strategy | Driver Harness & Model (T2) | Reviewer Harness & Model (T3) | Key Advantage |",
-        "|---|---|---|---|",
-        "| **Pi + Claude Frontier** | Pi CLI (`pi.dev`) / Sonnet | Codex / OpenAI o1 or o3-mini | Minimalist four-tool driver paired with deep invariant auditor. |",
-        "| **Western Frontier** | Claude Code / Claude 3.7 Sonnet | Codex or Pi / OpenAI o1 or o3-mini | Full corporate independence; catches subtle logic defects. |",
-        "| **Hybrid High-Yield** | Claude Code / Claude 3.7 Sonnet | Cline or Pi / DeepSeek R1 | High-capability implementation paired with low-cost open reasoning. |",
-        "| **Budget Maximizer** | Pi or OpenCode / DeepSeek V3 | Pi (`--tools read,grep`) / DeepSeek R1 | 80–90% cost reduction with enforced read-only independent review. |",
-        ""
-    ])
+    md_lines.extend(["## Sources and notes", ""])
+    for m in models:
+        sources, notes = m.get("sources", []), m.get("notes", [])
+        if not sources and not notes:
+            continue
+        links = ", ".join(f"<{u}>" for u in sources)
+        md_lines.append(f"- **`{m['id']}`**" + (f" (sources: {links})" if links else ""))
+        for note in notes:
+            md_lines.append(f"  - {note}")
+    md_lines.append("")
+
+    pairings = data.get("pairings", [])
+    if pairings:
+        md_lines.extend([
+            "## Recommended Pairing Strategy (Mode A)",
+            "",
+            "Under **Mode A (Cross-Harness)**, the `driver` and `reviewer` never share a harness or subagent lineage. Each pairing uses model ids from this catalog and harness ids from [harness-parameters.md](harness-parameters.md).",
+            "",
+            "| Strategy | Driver (harness / model) | Reviewer (harness / model) | Key advantage |",
+            "|---|---|---|---|",
+        ])
+        for p in pairings:
+            d, r = p["driver"], p["reviewer"]
+            md_lines.append(f"| **{p['strategy']}** | `{d['harness']}` / `{d['model']}` | `{r['harness']}` / `{r['model']}` | {p['advantage']} |")
+        md_lines.append("")
 
     return "\n".join(md_lines)
 
@@ -358,7 +404,7 @@ def update_price(model_id: str, in_usd: float, out_usd: float, cache_usd: float 
 
     save_json(data, MODELS_JSON_PATH)
     rendered = render_models_markdown(data)
-    with open(MODELS_MD_PATH, "w", encoding="utf-8") as f:
+    with open(MODELS_MD_PATH, "w", encoding="utf-8", newline="\n") as f:
         f.write(rendered)
     print(f"Updated pricing for '{model_id}' and re-rendered {MODELS_MD_PATH}")
     return True
@@ -390,7 +436,7 @@ def mark_verified(entry_ids: list[str]) -> bool:
                 print(f"Validation error: {err}", file=sys.stderr)
             return False
         save_json(data, path)
-        with open(md_path, "w", encoding="utf-8") as f:
+        with open(md_path, "w", encoding="utf-8", newline="\n") as f:
             f.write(render(data))
     if remaining:
         print(f"Error: unknown ids: {', '.join(sorted(remaining))}", file=sys.stderr)
@@ -499,7 +545,7 @@ def main() -> int:
                 print("Cannot render models: validation failed.", file=sys.stderr)
                 return 1
             rendered_m = render_models_markdown(m_data)
-            with open(MODELS_MD_PATH, "w", encoding="utf-8") as f:
+            with open(MODELS_MD_PATH, "w", encoding="utf-8", newline="\n") as f:
                 f.write(rendered_m)
             print(f"Rendered {MODELS_MD_PATH} successfully.")
 
@@ -510,7 +556,7 @@ def main() -> int:
                 print("Cannot render harnesses: validation failed.", file=sys.stderr)
                 return 1
             rendered_h = render_harnesses_markdown(h_data)
-            with open(HARNESS_MD_PATH, "w", encoding="utf-8") as f:
+            with open(HARNESS_MD_PATH, "w", encoding="utf-8", newline="\n") as f:
                 f.write(rendered_h)
             print(f"Rendered {HARNESS_MD_PATH} successfully.")
 
