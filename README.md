@@ -69,25 +69,13 @@ prerequisites, and failure behavior. Generating text does not publish it.
 
 ## Project initialization quick start
 
-Install `project-init` to plan or apply an engineering baseline for a new or existing project:
-
-```bash
-npx skills add smota/tiny-skills --skill project-init
+```text
+/project-init --plan .
 ```
 
-In your agent session, use `/project-init --plan [path]` for a read-only intake and proposal,
-`/project-init --apply [path]` to apply reviewed choices within your authorization, or
-`/project-init --verify [path]` to check an existing baseline. `/project-init [path]` combines
-intake and initialization when authorized. These are conversational entry points; use the
-equivalent natural-language request if your harness does not register slash commands.
-
-The skill preserves existing work and covers canonical agent instructions, project structure,
-architecture decisions, and stack-aware checks. Code scaffolding needs the selected toolchain;
-AFD and live harness checks are optional and require their own setup and authorization.
-Multi-harness governance and frontier/Chinese model tiering can be planned using the
-embedded model catalog and execution model references.
-See the [skill documentation](skills/software-engineering/project-init/SKILL.md) for inputs,
-prerequisites, outputs, and failure behavior.
+Runs a read-only intake and proposes the baseline; `--apply` writes the reviewed choices and `--verify` checks
+an existing baseline. See the [skill documentation](skills/software-engineering/project-init/SKILL.md) for
+inputs, prerequisites, outputs, the optional multi-harness execution policy, and failure behavior.
 
 ## Design
 

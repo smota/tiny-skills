@@ -27,7 +27,7 @@ Always check official provider pricing and documentation. Never infer rates or r
 
 ## Classification Rules for Tiers
 
-When adding or reclassifying a model, apply these criteria:
+Tier meanings are defined once, in `skills/software-engineering/project-init/assets/execution-policy.template.md`. When adding or reclassifying a model, apply these criteria:
 
 - **T1 (`mechanical`):** High tokens/sec, low input cost ($ < 1.00 per 1M), large context window, fast extraction. Primary roles: `scout`, `oracle` (assisted).
 - **T2 (`standard`):** Proven coding capability, high adherence to formatting/contracts, multi-file diff reliability. Primary role: `driver`.
