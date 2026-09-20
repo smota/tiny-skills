@@ -1,7 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
-  "snapshot_date": "2026-09-20",
   "description": "Canonical catalog of AI models mapped to operational tiers (T1-T3) across Western and Chinese providers for engineering project initialization.",
   "models": [
     {
@@ -18,7 +17,8 @@
         "cache_read_usd": 0.08
       },
       "recommended_roles": ["scout", "oracle"],
-      "strengths": "Fast context reading, high prompt-caching efficiency, structured inventory and extraction."
+      "strengths": "Fast context reading, high prompt-caching efficiency, structured inventory and extraction.",
+      "verified_at": null
     },
     {
       "id": "gpt-4o-mini",
@@ -34,7 +34,8 @@
         "cache_read_usd": 0.075
       },
       "recommended_roles": ["scout"],
-      "strengths": "Ultra-low token cost, broad ecosystem tooling compatibility, high throughput batching."
+      "strengths": "Ultra-low token cost, broad ecosystem tooling compatibility, high throughput batching.",
+      "verified_at": null
     },
     {
       "id": "gemini-2.0-flash",
@@ -50,7 +51,8 @@
         "cache_read_usd": 0.025
       },
       "recommended_roles": ["scout"],
-      "strengths": "Massive 1M context window at low price, multi-file code scanning, minimal latency."
+      "strengths": "Massive 1M context window at low price, multi-file code scanning, minimal latency.",
+      "verified_at": null
     },
     {
       "id": "deepseek-chat",
@@ -66,7 +68,8 @@
         "cache_read_usd": 0.014
       },
       "recommended_roles": ["scout", "driver"],
-      "strengths": "Unbeatable token economy, strong coding fundamentals, low cache read cost."
+      "strengths": "Unbeatable token economy, strong coding fundamentals, low cache read cost.",
+      "verified_at": null
     },
     {
       "id": "qwen-turbo",
@@ -82,7 +85,8 @@
         "cache_read_usd": 0.01
       },
       "recommended_roles": ["scout"],
-      "strengths": "1M context window at minimal cost, excellent multilingual and JSON schema compliance."
+      "strengths": "1M context window at minimal cost, excellent multilingual and JSON schema compliance.",
+      "verified_at": null
     },
     {
       "id": "glm-4-flash",
@@ -98,7 +102,8 @@
         "cache_read_usd": 0.00
       },
       "recommended_roles": ["scout"],
-      "strengths": "Near-zero cost tier for auxiliary scans, background documentation parsing, and lint sorting."
+      "strengths": "Near-zero cost tier for auxiliary scans, background documentation parsing, and lint sorting.",
+      "verified_at": null
     },
     {
       "id": "claude-3-7-sonnet-20250219",
@@ -114,7 +119,8 @@
         "cache_read_usd": 0.30
       },
       "recommended_roles": ["driver"],
-      "strengths": "Industry gold standard for direct code generation, unit test writing, and complex diff execution."
+      "strengths": "Industry gold standard for direct code generation, unit test writing, and complex diff execution.",
+      "verified_at": null
     },
     {
       "id": "gpt-4o",
@@ -130,7 +136,8 @@
         "cache_read_usd": 1.25
       },
       "recommended_roles": ["driver"],
-      "strengths": "Stable function calling, robust multi-language implementation, mature tool use."
+      "strengths": "Stable function calling, robust multi-language implementation, mature tool use.",
+      "verified_at": null
     },
     {
       "id": "gemini-2.5-pro",
@@ -146,7 +153,8 @@
         "cache_read_usd": 0.31
       },
       "recommended_roles": ["driver", "scout"],
-      "strengths": "Huge 2M context for holistic refactoring across large codebases, rigorous type compliance."
+      "strengths": "Huge 2M context for holistic refactoring across large codebases, rigorous type compliance.",
+      "verified_at": null
     },
     {
       "id": "qwen-2.5-coder-32b-instruct",
@@ -162,7 +170,8 @@
         "cache_read_usd": 0.05
       },
       "recommended_roles": ["driver"],
-      "strengths": "Specialized open-weight coding architecture with exceptional completion quality per dollar."
+      "strengths": "Specialized open-weight coding architecture with exceptional completion quality per dollar.",
+      "verified_at": null
     },
     {
       "id": "moonshot-v1-128k",
@@ -178,7 +187,8 @@
         "cache_read_usd": 0.10
       },
       "recommended_roles": ["driver"],
-      "strengths": "High long-context recall, consistent code style conformance, strong bilingual handling."
+      "strengths": "High long-context recall, consistent code style conformance, strong bilingual handling.",
+      "verified_at": null
     },
     {
       "id": "abab6.5s-chat",
@@ -194,7 +204,8 @@
         "cache_read_usd": 0.02
       },
       "recommended_roles": ["driver"],
-      "strengths": "Extended 245k window, high token throughput for heavy multi-file diff tasks."
+      "strengths": "Extended 245k window, high token throughput for heavy multi-file diff tasks.",
+      "verified_at": null
     },
     {
       "id": "claude-3-7-sonnet-thinking",
@@ -210,7 +221,8 @@
         "cache_read_usd": 0.30
       },
       "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Adjustable extended reasoning, sharp adversarial critique, high invariant verification."
+      "strengths": "Adjustable extended reasoning, sharp adversarial critique, high invariant verification.",
+      "verified_at": null
     },
     {
       "id": "o1",
@@ -226,7 +238,8 @@
         "cache_read_usd": 7.50
       },
       "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Deep multi-step reasoning, mathematical invariants, race condition and concurrency audit."
+      "strengths": "Deep multi-step reasoning, mathematical invariants, race condition and concurrency audit.",
+      "verified_at": null
     },
     {
       "id": "o3-mini",
@@ -242,7 +255,8 @@
         "cache_read_usd": 0.55
       },
       "recommended_roles": ["reviewer"],
-      "strengths": "High reasoning density at standard coding prices; fast adversarial audit passes."
+      "strengths": "High reasoning density at standard coding prices; fast adversarial audit passes.",
+      "verified_at": null
     },
     {
       "id": "gemini-2.0-flash-thinking-exp",
@@ -258,7 +272,8 @@
         "cache_read_usd": 0.00
       },
       "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Full-repository reasoning context window for cross-module architecture verification."
+      "strengths": "Full-repository reasoning context window for cross-module architecture verification.",
+      "verified_at": null
     },
     {
       "id": "deepseek-reasoner",
@@ -274,7 +289,8 @@
         "cache_read_usd": 0.14
       },
       "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Benchmark-grade open reasoning model, exceptional at catching logic bugs and corner cases at modest cost."
+      "strengths": "Benchmark-grade open reasoning model, exceptional at catching logic bugs and corner cases at modest cost.",
+      "verified_at": null
     },
     {
       "id": "qwq-32b",
@@ -290,7 +306,8 @@
         "cache_read_usd": 0.05
       },
       "recommended_roles": ["reviewer"],
-      "strengths": "Cost-effective open-weights reasoning model for logical validation and protocol review."
+      "strengths": "Cost-effective open-weights reasoning model for logical validation and protocol review.",
+      "verified_at": null
     },
     {
       "id": "kimi-k1.5",
@@ -306,7 +323,8 @@
         "cache_read_usd": 0.20
       },
       "recommended_roles": ["reviewer", "arbiter"],
-      "strengths": "Long-context reasoning model suited for reviewing multi-session architectural drift."
+      "strengths": "Long-context reasoning model suited for reviewing multi-session architectural drift.",
+      "verified_at": null
     }
   ]
 }

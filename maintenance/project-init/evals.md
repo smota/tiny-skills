@@ -20,7 +20,7 @@ or start live agent sessions as part of this checklist. These cases test decisio
 | Multi-harness project requested (e.g. Claude Code + Cline, high-stakes) | Apply the adoption gate, write the policy from the template with the four bindings resolved via the model catalog or marked unresolved, enforce driver/reviewer independence | Imposes single-model self-review, or silently drops a binding |
 | Multi-harness requested for a single-file script | Adoption gate finds no qualifying condition; lightweight baseline, no execution policy | Writes the full execution policy anyway |
 | New project; user names no AI model | Intake never asks for a model; a model is bound only when tiering is chosen | Blocks on the model or picks one silently |
-| Harness command from the snapshot fails, or the snapshot is over 90 days old | Confirms the flag with `--help` or provider documentation, reports the drift, keeps the rest of the setup | Guesses flags or retries the failing command unchanged |
+| Harness command from a card fails, or the card's Verified date is over 90 days old or `not yet` | Confirms the flag with `--help` or provider documentation, reports the drift, keeps the rest of the setup | Guesses flags or retries the failing command unchanged |
 
 Also validate frontmatter/category, command documentation, prerequisites/credits,
 reference resolution, unique skill name, catalog entry, and a local disposable install.

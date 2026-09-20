@@ -9,7 +9,7 @@ Maintain the accuracy, invocation flags, headless options, and parameter constra
 1. **CLI Version Updates:** When a harness CLI package updates (e.g. `@earendil-works/pi-coding-agent`, `@anthropic-ai/claude-code`, `aider-chat`).
 2. **Provider Parameter Shifts:** When provider APIs alter reasoning controls (e.g. changing from fixed thinking tokens to reasoning effort levels or new temperature compatibility rules).
 3. **New Harness Onboarding:** Adding new coding agents or runners (e.g., Goose, Mentat, Cursor Composer CLI).
-4. **Automated Staleness Trigger:** When `python refresh_model_catalog.py --check-staleness` flags the snapshot as older than 90 days.
+4. **Automated Staleness Trigger:** When `python refresh_model_catalog.py --check-staleness` lists a harness as unverified or verified more than 90 days ago.
 
 ## Verification Surfaces and Commands
 
@@ -39,7 +39,7 @@ Inspect the installed version of each CLI to verify available flags:
    ```
 
 3. **Update JSON Schema Records:**
-   Edit `maintenance/project-init/harness-parameters.json` to update flags, environment variables, tier presets, or prohibitions.
+   Edit `maintenance/project-init/harness-parameters.json` to update flags, environment variables, tier presets, or prohibitions. Then stamp each harness you checked with `python maintenance/project-init/refresh_model_catalog.py --mark-verified <harness_id>`.
 
 4. **Validate Schema and Integrity:**
    Ensure valid JSON, unique IDs, valid role definitions, and no missing keys:
@@ -57,5 +57,5 @@ Inspect the installed version of each CLI to verify available flags:
    Confirm changes and commit atomically:
    ```bash
    git diff skills/software-engineering/project-init/references/
-   git commit -m "chore(project-init): refresh harness parameters snapshot to YYYY-MM-DD"
+   git commit -m "chore(project-init): refresh harness parameters verification to YYYY-MM-DD"
    ```

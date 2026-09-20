@@ -1,11 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "version": "1.0.0",
-  "snapshot_date": "2026-09-20",
   "description": "Canonical parameters, CLI flags, agent primitives, and execution presets for major AI coding harnesses to ensure zero-guessing model selection.",
   "harnesses": [
     {
       "id": "pi-dev",
+      "verified_at": "2026-09-20",
       "name": "Pi Coding Agent (pi.dev)",
       "binary": "pi",
       "install": "npm install -g --ignore-scripts @earendil-works/pi-coding-agent",
@@ -48,11 +48,13 @@
       },
       "prohibitions": [
         "Always pass -p / --print in non-interactive sessions to avoid TUI terminal lockup.",
-        "Always use --tools read,grep,find,ls when running in reviewer or scout role to enforce read-only boundary."
+        "Always use --tools read,grep,find,ls when running in reviewer or scout role to enforce read-only boundary.",
+        "Unchecked: the DeepSeek preset ids use pi's provider/id form, and the pi install used for the last check lists no DeepSeek models."
       ]
     },
     {
       "id": "claude-code",
+      "verified_at": "2026-09-20",
       "name": "Claude Code CLI",
       "binary": "claude",
       "install": "npm install -g @anthropic-ai/claude-code",
@@ -61,6 +63,7 @@
         "headless_prompt": "-p \"{prompt}\"",
         "stdin_prompt": "echo \"{prompt}\" | claude -p",
         "permission_mode": "--permission-mode acceptEdits|plan|auto|dontAsk|bypassPermissions|manual",
+        "effort": "--effort low|medium|high|xhigh|max",
         "output_format": "--output-format json|text"
       },
       "env_vars": {
@@ -70,28 +73,30 @@
       "tier_presets": {
         "T1": {
           "role": "scout",
-          "model": "claude-3-5-haiku-20241022",
-          "command_template": "claude -p \"{prompt}\" --model claude-3-5-haiku-20241022 --permission-mode plan"
+          "model": "claude-haiku-4-5-20251001",
+          "command_template": "claude -p \"{prompt}\" --model claude-haiku-4-5-20251001 --permission-mode plan"
         },
         "T2": {
           "role": "driver",
-          "model": "claude-3-7-sonnet-20250219",
-          "command_template": "claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode acceptEdits"
+          "model": "sonnet",
+          "command_template": "claude -p \"{prompt}\" --model sonnet --permission-mode acceptEdits"
         },
         "T3": {
           "role": "reviewer",
-          "model": "claude-3-7-sonnet-20250219",
-          "command_template": "MAX_THINKING_TOKENS=16000 claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode plan"
+          "model": "opus",
+          "command_template": "claude -p \"{prompt}\" --model opus --effort high --permission-mode plan"
         }
       },
       "prohibitions": [
         "Run with -p in non-interactive subagent sessions; without it the CLI blocks waiting for stdin.",
         "Use a --permission-mode the role needs: plan for scout and reviewer (no edits), acceptEdits for driver.",
-        "Temperature is not configurable through Claude Code CLI flags."
+        "Temperature is not configurable through Claude Code CLI flags.",
+        "Use the aliases sonnet and opus, which resolve to the latest model of each family. Use the full id claude-haiku-4-5-20251001 for Haiku: in the last check the alias haiku ran a Sonnet model."
       ]
     },
     {
       "id": "aider",
+      "verified_at": null,
       "name": "Aider CLI",
       "binary": "aider",
       "install": "pip install aider-chat",
@@ -128,6 +133,7 @@
     },
     {
       "id": "opencode",
+      "verified_at": null,
       "name": "OpenCode CLI",
       "binary": "opencode",
       "flags": {
@@ -163,6 +169,7 @@
     },
     {
       "id": "codex",
+      "verified_at": "2026-09-20",
       "name": "Codex CLI",
       "binary": "codex",
       "flags": {
@@ -193,6 +200,7 @@
     },
     {
       "id": "cline-roo",
+      "verified_at": null,
       "name": "Cline / Roo-Code Config",
       "type": "configuration_file",
       "config_path": ".roomodes or .cline/config.json",
@@ -209,7 +217,10 @@
           "config_snippet": {
             "apiProvider": "deepseek",
             "apiModelId": "deepseek-chat",
-            "autoApprove": ["read", "command"]
+            "autoApprove": [
+              "read",
+              "command"
+            ]
           }
         },
         "T2": {
@@ -217,7 +228,11 @@
           "config_snippet": {
             "apiProvider": "anthropic",
             "apiModelId": "claude-3-7-sonnet-20250219",
-            "autoApprove": ["read", "write", "command"]
+            "autoApprove": [
+              "read",
+              "write",
+              "command"
+            ]
           }
         },
         "T3": {
@@ -225,7 +240,9 @@
           "config_snippet": {
             "apiProvider": "deepseek",
             "apiModelId": "deepseek-reasoner",
-            "autoApprove": ["read"]
+            "autoApprove": [
+              "read"
+            ]
           }
         }
       },
@@ -235,10 +252,16 @@
     },
     {
       "id": "antigravity-subagent",
+      "verified_at": null,
       "name": "Antigravity Agent Primitive (invoke_subagent)",
       "type": "agent_primitive",
       "primitive_name": "invoke_subagent",
-      "allowed_model_values": ["flash_lite", "flash", "pro", "inherit"],
+      "allowed_model_values": [
+        "flash_lite",
+        "flash",
+        "pro",
+        "inherit"
+      ],
       "tier_presets": {
         "T1": {
           "role": "scout",
@@ -262,6 +285,7 @@
     },
     {
       "id": "direct-api",
+      "verified_at": null,
       "name": "Direct Provider API Request Parameters",
       "type": "api",
       "rules": [
