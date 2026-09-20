@@ -2,6 +2,7 @@
 name: git-deliver
 description: Commit and push scoped local work, optionally merge into its parent branch and push that branch, with multi-agent worktree checks and guided handling of ambiguous changes.
 category: software-engineering
+disable-model-invocation: true
 ---
 
 # Git Deliver
@@ -16,25 +17,24 @@ Deliver one task from its current worktree to a named remote branch. Optionally 
 - Repository read access for audit; write access and configured commit identity for delivery. Respect configured hooks and signing; their tools and keys must be available if required.
 - A configured remote, network access, and credentials with permission to push the selected branches. Audit works offline, with remote freshness marked unknown.
 - The project's documented validation tools for the affected changes. Report missing tools rather than installing or bypassing them silently.
-- Optional: the hosting provider's CLI/API and account permissions when repository rules require pull requests. No provider, agent coordinator, Python, Node, or sibling skill is required for the Git workflow.
-- Installation through `npx skills add` additionally requires Node.js/npm and network access; these are installer dependencies only.
+- Optional: the hosting provider's CLI/API and account permissions when repository rules require pull requests.
 
 ## Commands
 
-These are conversational commands, not installed shell executables. Equivalent natural language works. Default path is the active repository/worktree; optional context can specify paths or hunks, message, remote, destination branch, parent branch, and known agent ownership.
+Default path is the active repository/worktree; optional context can specify paths or hunks, message, remote, destination branch, parent branch, and known agent ownership.
 
 ### `/git-deliver [context]`
 
 - **Input:** Current task and optional context above.
 - **Action:** Inspect, scope, validate, commit if needed, push the feature branch, and verify remotely. Invocation authorizes those steps for the identified task; do not repeatedly ask permission in the standard case.
-- **Output:** Commit, remote destination, verification, and remaining local changes.
-- **Failure:** Preserve completed steps; explain the smallest unresolved decision. No implicit merge.
+- **Output:** The summary under Output below.
+- **Failure:** Preserve completed steps; explain the smallest unresolved decision. Integration into a parent needs `/git-deliver-merge`.
 
 ### `/git-deliver-merge [parent] [context]`
 
 - **Input:** Same context, plus the intended parent when not established by reliable task context or repository policy.
-- **Action:** Complete `/git-deliver`, integrate the delivered commit into the parent, validate the result, and push the parent. Invocation authorizes both pushes and ordinary merge integration, subject to existing repository rules.
-- **Output:** Feature delivery and parent integration reported separately, with remote proof for each.
+- **Action:** Complete `/git-deliver`, then integrate the delivered commit into the parent, validate the result, and push the parent, following [merge.md](references/merge.md). Invocation authorizes both pushes and ordinary merge integration, subject to existing repository rules.
+- **Output:** The summary under Output below, with feature delivery and parent integration reported separately, each with remote proof.
 - **Failure:** A successful feature push remains successful if integration is blocked; report exactly where progress stopped.
 
 ### `/git-deliver-audit [context]`
@@ -52,7 +52,12 @@ Read applicable repository instructions. Record the canonical worktree path, com
 
 Inspect every registered worktree's status when accessible, without modifying it. Read [exceptions.md](references/exceptions.md) when ownership is unknown, worktrees appear abandoned, changes are mixed, or any standard precondition fails.
 
-One writer owns each affected worktree and branch during mutation. Establish ownership from current session/coordinator evidence or an explicit handoff. Separate worktrees have separate indexes but share branch refs and configuration. `git worktree lock` protects against removal/pruning; it is not a concurrency mutex. If another agent may be writing the same checkout or target branch and no handoff exists, stop mutations there. Recheck HEAD, index, scoped content, and target refs immediately before each mutation; unexpected drift requires a fresh review. Snapshot checks alone cannot guarantee exclusion of another writer.
+**Ownership**
+
+- One writer owns each affected worktree and branch during mutation, established from current session/coordinator evidence or an explicit handoff.
+- Separate worktrees have separate indexes but share branch refs and configuration. `git worktree lock` protects against removal/pruning; it is not a concurrency mutex.
+- With no handoff, stop mutations on any checkout or target branch another agent may be writing.
+- Recheck HEAD, index, scoped content, and target refs immediately before each mutation; unexpected drift requires a fresh review. Snapshot checks alone cannot guarantee exclusion of another writer.
 
 **Complete when:** task-owned changes and writable branches are identified; other work stays attributed or explicitly unknown.
 
@@ -80,21 +85,15 @@ If nothing new is staged, do not create an empty commit: deliver already reviewe
 
 ### 4. Push the feature and verify
 
-Recheck local and remote state. Push the recorded commit ID to the explicit destination using `git push <remote> <commit-id>:refs/heads/<destination>`, without force. Configure tracking only if needed and consistent with the resolved mapping; do not overwrite an existing custom upstream silently.
+Recheck local and remote state. Push the recorded commit ID to the explicit destination using `git push <remote> <commit-id>:refs/heads/<destination>`. Configure tracking only if needed and consistent with the resolved mapping; do not overwrite an existing custom upstream silently.
 
-Use `git ls-remote --heads <remote> refs/heads/<destination>` against the actual push endpoint to verify the remote tip. Equality proves delivery at that observation. If another writer advanced it, fetch that branch and use `git merge-base --is-ancestor <delivered-id> <remote-tip>` to prove inclusion. A tracking ref alone is not remote proof. A rejected push or unavailable verification is partial success, never a reason to force-push.
+Use `git ls-remote --heads <remote> refs/heads/<destination>` against the actual push endpoint to verify the remote tip. Equality proves delivery at that observation. If another writer advanced it, fetch that branch and use `git merge-base --is-ancestor <delivered-id> <remote-tip>` to prove inclusion. A tracking ref alone is not remote proof. A rejected push or unavailable verification is partial success.
 
-**Complete when:** the remote branch is proven to contain the delivered commit. Proceed to step 5 only in merge mode.
+**Complete when:** the remote branch is proven to contain the delivered commit. Continue to step 5 only for `/git-deliver-merge`.
 
 ### 5. Integrate into the parent and publish
 
-Locate the parent's existing worktree. Use it only when clean, idle, and under this operation's ownership. If the parent is not checked out, create a separate integration worktree on that branch; if it exists only remotely, create its local tracking branch there. Keep the source worktree in place. Never force the parent into a second checkout.
-
-Fetch the parent destination, inspect local parent-only commits, and fast-forward a behind-only parent with `git merge --ff-only <remote-parent-tip>`. Local-only or divergent parent history requires scope review before publishing it. Record the parent starting ID and the already delivered feature ID.
-
-If the feature is already an ancestor of the parent, no merge is needed. If the parent is an ancestor of the feature, use `git merge --ff-only <delivered-id>`. Otherwise, when repository policy allows merge commits, use `git merge --no-ff --no-commit <delivered-id>`, inspect the combined result, run required checks, then commit. Fast-forwards also require appropriate validation of the resulting tree before parent push. A policy requiring squash, rebase, or a pull request routes to the exceptions reference.
-
-Push the recorded integration commit to the explicit parent destination without force. Verify the remote parent contains both the integration commit and the delivered feature commit. Report any local parent update separately from remote publication. Keep branches and worktrees; cleanup is a separate user request.
+Follow [merge.md](references/merge.md).
 
 **Complete when:** remote parent inclusion is verified, or a precise partial result and blocker are reported.
 
@@ -115,19 +114,6 @@ Return a compact summary in the user's language:
 - **Parent:** not requested, integrated and published, or precise pending stage.
 - **Validation:** checks passed/failed/not run and their scope.
 - **Worktrees:** relevant ownership or orphan candidates; nothing deleted.
-
-## Examples
-
-```text
-/git-deliver
-Commit and push the work from this task.
-
-/git-deliver-merge develop
-Deliver this task and integrate it into develop on origin.
-
-/git-deliver-audit
-Explain which changes belong together and flag possibly abandoned worktrees.
-```
 
 ## Credits
 
