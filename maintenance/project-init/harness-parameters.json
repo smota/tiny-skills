@@ -60,7 +60,7 @@
         "model": "--model {model_id}",
         "headless_prompt": "-p \"{prompt}\"",
         "stdin_prompt": "echo \"{prompt}\" | claude -p",
-        "auto_approve": "--permission-mode accept-all",
+        "permission_mode": "--permission-mode acceptEdits|plan|auto|dontAsk|bypassPermissions|manual",
         "output_format": "--output-format json|text"
       },
       "env_vars": {
@@ -71,22 +71,23 @@
         "T1": {
           "role": "scout",
           "model": "claude-3-5-haiku-20241022",
-          "command_template": "claude -p \"{prompt}\" --model claude-3-5-haiku-20241022 --permission-mode accept-all"
+          "command_template": "claude -p \"{prompt}\" --model claude-3-5-haiku-20241022 --permission-mode plan"
         },
         "T2": {
           "role": "driver",
           "model": "claude-3-7-sonnet-20250219",
-          "command_template": "claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode accept-all"
+          "command_template": "claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode acceptEdits"
         },
         "T3": {
           "role": "reviewer",
           "model": "claude-3-7-sonnet-20250219",
-          "command_template": "MAX_THINKING_TOKENS=16000 claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode accept-all"
+          "command_template": "MAX_THINKING_TOKENS=16000 claude -p \"{prompt}\" --model claude-3-7-sonnet-20250219 --permission-mode plan"
         }
       },
       "prohibitions": [
-        "Never run without -p in non-interactive subagent sessions (blocks waiting for stdin).",
-        "Do not pass --temperature flags (unsupported on Claude Code CLI)."
+        "Run with -p in non-interactive subagent sessions; without it the CLI blocks waiting for stdin.",
+        "Use a --permission-mode the role needs: plan for scout and reviewer (no edits), acceptEdits for driver.",
+        "Temperature is not configurable through Claude Code CLI flags."
       ]
     },
     {
@@ -126,8 +127,8 @@
       ]
     },
     {
-      "id": "opencode-codex",
-      "name": "OpenCode / Codex CLI",
+      "id": "opencode",
+      "name": "OpenCode CLI",
       "binary": "opencode",
       "flags": {
         "model": "--model {model_id}",
@@ -157,7 +158,37 @@
         }
       },
       "prohibitions": [
-        "Never run without --headless in unattended automation."
+        "Run with --headless in unattended automation."
+      ]
+    },
+    {
+      "id": "codex",
+      "name": "Codex CLI",
+      "binary": "codex",
+      "flags": {
+        "headless_prompt": "exec \"{prompt}\"",
+        "model": "-m, --model {model_id}",
+        "sandbox": "-s, --sandbox read-only|workspace-write|danger-full-access",
+        "json_events": "--json",
+        "last_message_file": "-o, --output-last-message {file_path}"
+      },
+      "tier_presets": {
+        "T1": {
+          "role": "scout",
+          "command_template": "codex exec -s read-only \"{prompt}\""
+        },
+        "T2": {
+          "role": "driver",
+          "command_template": "codex exec -s workspace-write \"{prompt}\""
+        },
+        "T3": {
+          "role": "reviewer",
+          "command_template": "codex exec -s read-only \"{prompt}\""
+        }
+      },
+      "prohibitions": [
+        "Run non-interactively with exec; the bare command opens the interactive UI.",
+        "Set the sandbox to the role: read-only for scout and reviewer, workspace-write for driver."
       ]
     },
     {
@@ -199,7 +230,7 @@
         }
       },
       "prohibitions": [
-        "Do not set temperature for deepseek-reasoner or thinking models in config."
+        "Leave temperature unset for deepseek-reasoner and thinking models in config."
       ]
     },
     {
@@ -226,7 +257,7 @@
         }
       },
       "prohibitions": [
-        "Do not pass external model IDs (e.g. 'claude-3-7-sonnet' or 'gpt-4o') to invoke_subagent; use only 'flash_lite', 'flash', 'pro', or 'inherit'."
+        "Pass only 'flash_lite', 'flash', 'pro', or 'inherit' as the Model of invoke_subagent."
       ]
     },
     {
@@ -236,15 +267,15 @@
       "rules": [
         {
           "provider": "anthropic",
-          "rule": "When thinking is enabled ({'type': 'enabled', 'budget_tokens': N}), temperature MUST NOT be set or must be exactly 1.0. Any other temperature returns HTTP 400."
+          "rule": "When thinking is enabled ({'type': 'enabled', 'budget_tokens': N}), leave temperature unset or use exactly 1.0; any other value returns HTTP 400."
         },
         {
           "provider": "openai",
-          "rule": "For reasoning models (o1, o3-mini), do NOT send temperature, top_p, or presence_penalty. Use reasoning_effort ('low' | 'medium' | 'high')."
+          "rule": "For reasoning models (o1, o3-mini), send reasoning_effort ('low' | 'medium' | 'high') and omit temperature, top_p, and presence_penalty."
         },
         {
           "provider": "deepseek",
-          "rule": "For deepseek-reasoner (R1), temperature is fixed by the provider. Do not attempt to override temperature. For deepseek-chat, use temperature=0.0 for deterministic coding."
+          "rule": "For deepseek-reasoner (R1), temperature is fixed by the provider, so omit it. For deepseek-chat, use temperature=0.0 for deterministic coding."
         },
         {
           "provider": "google",

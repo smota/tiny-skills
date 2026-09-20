@@ -18,9 +18,10 @@ Inspect the installed version of each CLI to verify available flags:
 | Harness | Primary Inspection Command | Critical Verification Questions |
 |---|---|---|
 | **Pi Coding Agent (`pi.dev`)** | `pi --help` | Has `--model`, `-p` (non-interactive), `--tools` syntax changed? |
-| **Claude Code** | `claude --help` | Is `-p` and `--permission-mode accept-all` still current? |
+| **Claude Code** | `claude --help` | Are `-p` and every `--permission-mode` value used by the presets still in the CLI's listed choices? |
 | **Aider** | `aider --help` | What are the current `--reasoning-effort` and `--architect` flags? |
-| **OpenCode / Codex** | `opencode --help` | Are `--headless` and `run -f` flags intact? |
+| **OpenCode** | `opencode --help` | Are `--headless` and `run -f` flags intact? |
+| **Codex** | `codex exec --help` | Are `exec`, `-s/--sandbox` values, `-m`, `--json`, and `-o` unchanged? |
 | **Antigravity** | Check `invoke_subagent` docstring | What are the valid string values for `Model` (`flash_lite`, `flash`, `pro`, `inherit`)? |
 
 ## Continuous Refresh Procedure
