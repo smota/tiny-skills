@@ -18,7 +18,7 @@ Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed us
 | software-engineering | [git-deliver](skills/software-engineering/git-deliver/) | Commit and push task-owned work, optionally integrate into the parent branch, and assess multi-agent worktrees | Git, repository access, commit identity, remote credentials for pushes, and project validation tools | `npx skills add smota/tiny-skills --skill git-deliver` |
 | software-engineering | [local-agent-instruction-intelligence](skills/software-engineering/local-agent-instruction-intelligence/) | Distill session lessons and consolidate scoped agent-instruction layers with optional recursive and advisory-guidance review | Project read access and visible session context; write access only for confirmed changes | `npx skills add smota/tiny-skills --skill local-agent-instruction-intelligence` |
 | software-engineering | [project-init](skills/software-engineering/project-init/) | Initialize project practices through a short intake, canonical instructions, ADRs, stack-aware validation, and optional multi-harness model tiering | Read/write access; selected toolchain for code; optional AFD and agent CLIs | `npx skills add smota/tiny-skills --skill project-init` |
-| writing | [release-notes](skills/writing/release-notes/) | Write value-led technical notes, user-facing release notes, and release announcements from selected commits, with flexible focus and presentation | None for supplied commit output; Git and repository read access for collection; optional hosted-source read access | `npx skills add smota/tiny-skills --skill release-notes` |
+| writing | [release-notes](skills/writing/release-notes/) | Write changelogs, release notes, and announcements for end-users, the technical team, or executives from selected commits, with flexible focus and presentation | None for supplied commit output; Git and repository read access for collection; optional hosted-source read access | `npx skills add smota/tiny-skills --skill release-notes` |
 
 ## Empirical refinement quick start
 
@@ -46,26 +46,16 @@ See the [skill documentation](skills/software-engineering/git-deliver/SKILL.md).
 
 ## Release communication quick start
 
-Use `/release-notes technical`, `/release-notes release`, or `/release-notes announce`
-followed by a commit selection and conversational preferences. `/release-notes` defaults
-to user-facing release notes. These are conversational entry points, not CLI flags;
-use equivalent prose if your harness does not register slash commands.
-
 ```text
-/release-notes release v1.0.0..v1.1.0
-For operators, in English, with icons. Focus on reliability.
-
-/release-notes technical v1.0.0..v1.1.0
-Without icons. Structure: behavior changes, compatibility, validation.
-
-/release-notes announce v1.0.0..v1.1.0
-For LinkedIn, plain text, up to 180 words.
+/release-notes changelog since last release
+For executives, brief, plain text.
 ```
 
-All modes use selected commits as their factual basis. Optional context and highlights
-guide emphasis; audience, language, length, structure, and presentation remain flexible.
-See the [skill documentation](skills/writing/release-notes/SKILL.md) for evidence boundaries,
-prerequisites, and failure behavior. Generating text does not publish it.
+Formats are `changelog`, `notes`, and `announce`; audiences are end-users, the technical team, and
+executives. The scope is a range, `today`, `since last release`, or supplied commit output, and every
+format uses the selected commits as its factual basis. See the
+[skill documentation](skills/writing/release-notes/SKILL.md) for evidence boundaries, prerequisites,
+and failure behavior. Generating text does not publish it.
 
 ## Project initialization quick start
 
