@@ -32,13 +32,14 @@ Runs up to two reviewed rounds on the scoped behavior, keeping evidence and stop
 
 ## Git delivery quick start
 
-Use `/git-deliver` to commit and push the current task, `/git-deliver-merge [parent]`
-to also merge and push the parent branch, or `/git-deliver-audit` for an inspection
-without mutations. These are conversational commands; equivalent prose works.
-The standard workflow proceeds within the command's authorization. Mixed changes,
-uncertain parent branches, and concurrent writers receive a concrete scope review.
-Worktree orphan candidates are reported for review; delivery does not delete them.
-See the [skill documentation](skills/software-engineering/git-deliver/SKILL.md).
+```text
+/git-deliver-merge develop
+```
+
+Delivers this task's commit to its remote branch, then integrates it into `develop` and pushes, proving each push on the remote.
+`/git-deliver` stops after the feature push and `/git-deliver-audit` inspects without changes. See the
+[skill documentation](skills/software-engineering/git-deliver/SKILL.md) for scope review, worktree ownership,
+and failure behavior.
 
 ## Release communication quick start
 
