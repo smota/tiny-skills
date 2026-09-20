@@ -8,11 +8,7 @@ Use this reference to construct execution commands and to bind the harness roste
 ## Operating Rules
 
 1. **Snapshot first, then verify:** Take flags from this table. When a command fails, or the snapshot date above is more than 90 days old, confirm the flag with the harness's `--help` or the provider's documentation, and report the difference so the snapshot can be refreshed.
-2. **Strict Reasoning Parameter Rules:**
-   - **Anthropic Thinking:** When `thinking` is enabled, `temperature` MUST NOT be passed, or must be set strictly to `1.0`. Enforcing `temperature: 0.0` causes HTTP 400 rejection.
-   - **OpenAI Reasoning (o1, o3-mini):** Never pass `temperature`, `top_p`, or penalty parameters. Set reasoning intensity via `reasoning_effort` (`low`, `medium`, `high`).
-   - **DeepSeek Reasoner (R1):** Temperature is fixed internally by DeepSeek. Do not attempt to override temperature for R1.
-3. **Headless Execution Requirement:** Always supply non-interactive / auto-approve flags (`-p`, `--yes`, `--permission-mode accept-all`) when dispatching background subagents to prevent CLI processes from locking up on interactive prompts.
+2. **Run non-interactively:** Start background subagents with the harness's non-interactive form (`-p`, `--message`, `--headless`, `exec`) so the CLI cannot block on a prompt, and grant only the permission the role needs (see each card's constraints). Provider reasoning-parameter rules live in the Direct Provider API card.
 
 ## Harness Reference Cards
 
@@ -25,15 +21,15 @@ Use this reference to construct execution commands and to bind the harness roste
 
 **Key CLI Flags:**
 
-| Purpose | Flag Syntax | Description / Example |
-|---|---|---|
-| `model` | `--model {model_id}` | Direct parameter binding |
-| `headless_prompt` | `-p "{prompt}"` | Direct parameter binding |
-| `mode` | `--mode text|json|rpc` | Direct parameter binding |
-| `restricted_tools` | `--tools {comma_separated_tools}` | Direct parameter binding |
-| `exclude_tools` | `--exclude-tools {tool_name}` | Direct parameter binding |
-| `system_prompt` | `--system-prompt "{text}"` | Direct parameter binding |
-| `append_system_prompt` | `--append-system-prompt "{text}"` | Direct parameter binding |
+| Purpose | Flag Syntax |
+|---|---|
+| `model` | `--model {model_id}` |
+| `headless_prompt` | `-p "{prompt}"` |
+| `mode` | `--mode text\|json\|rpc` |
+| `restricted_tools` | `--tools {comma_separated_tools}` |
+| `exclude_tools` | `--exclude-tools {tool_name}` |
+| `system_prompt` | `--system-prompt "{text}"` |
+| `append_system_prompt` | `--append-system-prompt "{text}"` |
 
 **Operational Tier Presets (Copy-Pasteable):**
 
@@ -54,10 +50,10 @@ Use this reference to construct execution commands and to bind the harness roste
   pi --model deepseek/deepseek-r1 --tools read,grep,find,ls -p "{prompt}"
   ```
 
-**Prohibitions & Critical Constraints:**
+**Constraints:**
 
-- ⚠️ **Always pass -p / --print in non-interactive sessions to avoid TUI terminal lockup.**
-- ⚠️ **Always use --tools read,grep,find,ls when running in reviewer or scout role to enforce read-only boundary.**
+- Always pass -p / --print in non-interactive sessions to avoid TUI terminal lockup.
+- Always use --tools read,grep,find,ls when running in reviewer or scout role to enforce read-only boundary.
 
 ### Claude Code CLI (`claude-code`)
 
@@ -67,33 +63,34 @@ Use this reference to construct execution commands and to bind the harness roste
 
 **Key CLI Flags:**
 
-| Purpose | Flag Syntax | Description / Example |
-|---|---|---|
-| `model` | `--model {model_id}` | Direct parameter binding |
-| `headless_prompt` | `-p "{prompt}"` | Direct parameter binding |
-| `stdin_prompt` | `echo "{prompt}" | claude -p` | Direct parameter binding |
-| `auto_approve` | `--permission-mode accept-all` | Direct parameter binding |
-| `output_format` | `--output-format json|text` | Direct parameter binding |
+| Purpose | Flag Syntax |
+|---|---|
+| `model` | `--model {model_id}` |
+| `headless_prompt` | `-p "{prompt}"` |
+| `stdin_prompt` | `echo "{prompt}" \| claude -p` |
+| `permission_mode` | `--permission-mode acceptEdits\|plan\|auto\|dontAsk\|bypassPermissions\|manual` |
+| `output_format` | `--output-format json\|text` |
 
 **Operational Tier Presets (Copy-Pasteable):**
 
 - **T1 (`scout`):**
   ```bash
-  claude -p "{prompt}" --model claude-3-5-haiku-20241022 --permission-mode accept-all
+  claude -p "{prompt}" --model claude-3-5-haiku-20241022 --permission-mode plan
   ```
 - **T2 (`driver`):**
   ```bash
-  claude -p "{prompt}" --model claude-3-7-sonnet-20250219 --permission-mode accept-all
+  claude -p "{prompt}" --model claude-3-7-sonnet-20250219 --permission-mode acceptEdits
   ```
 - **T3 (`reviewer`):**
   ```bash
-  MAX_THINKING_TOKENS=16000 claude -p "{prompt}" --model claude-3-7-sonnet-20250219 --permission-mode accept-all
+  MAX_THINKING_TOKENS=16000 claude -p "{prompt}" --model claude-3-7-sonnet-20250219 --permission-mode plan
   ```
 
-**Prohibitions & Critical Constraints:**
+**Constraints:**
 
-- ⚠️ **Never run without -p in non-interactive subagent sessions (blocks waiting for stdin).**
-- ⚠️ **Do not pass --temperature flags (unsupported on Claude Code CLI).**
+- Run with -p in non-interactive subagent sessions; without it the CLI blocks waiting for stdin.
+- Use a --permission-mode the role needs: plan for scout and reviewer (no edits), acceptEdits for driver.
+- Temperature is not configurable through Claude Code CLI flags.
 
 ### Aider CLI (`aider`)
 
@@ -103,15 +100,15 @@ Use this reference to construct execution commands and to bind the harness roste
 
 **Key CLI Flags:**
 
-| Purpose | Flag Syntax | Description / Example |
-|---|---|---|
-| `model` | `--model {model_id}` | Direct parameter binding |
-| `reasoning_effort` | `--reasoning-effort {low|medium|high}` | Direct parameter binding |
-| `thinking_tokens` | `--thinking-tokens {tokens}` | Direct parameter binding |
-| `headless_prompt` | `--message "{prompt}"` | Direct parameter binding |
-| `prompt_file` | `--message-file {file_path}` | Direct parameter binding |
-| `auto_approve` | `--yes --no-auto-commits` | Direct parameter binding |
-| `architect_mode` | `--architect --model {reasoning_model} --editor-model {coding_model}` | Direct parameter binding |
+| Purpose | Flag Syntax |
+|---|---|
+| `model` | `--model {model_id}` |
+| `reasoning_effort` | `--reasoning-effort {low\|medium\|high}` |
+| `thinking_tokens` | `--thinking-tokens {tokens}` |
+| `headless_prompt` | `--message "{prompt}"` |
+| `prompt_file` | `--message-file {file_path}` |
+| `auto_approve` | `--yes --no-auto-commits` |
+| `architect_mode` | `--architect --model {reasoning_model} --editor-model {coding_model}` |
 
 **Operational Tier Presets (Copy-Pasteable):**
 
@@ -128,24 +125,24 @@ Use this reference to construct execution commands and to bind the harness roste
   aider --model openrouter/deepseek/deepseek-r1 --reasoning-effort high --message "{prompt}" --yes --no-auto-commits --read-only
   ```
 
-**Prohibitions & Critical Constraints:**
+**Constraints:**
 
-- ⚠️ **Always include --yes in scripts to prevent blocking interactive commit/git prompts.**
-- ⚠️ **Include --no-auto-commits when running inside task-owned delivery loops.**
+- Always include --yes in scripts to prevent blocking interactive commit/git prompts.
+- Include --no-auto-commits when running inside task-owned delivery loops.
 
-### OpenCode / Codex CLI (`opencode-codex`)
+### OpenCode CLI (`opencode`)
 
 - **Binary:** `opencode`
 - **Type:** `cli`
 
 **Key CLI Flags:**
 
-| Purpose | Flag Syntax | Description / Example |
-|---|---|---|
-| `model` | `--model {model_id}` | Direct parameter binding |
-| `run_file` | `run -f {file_path}` | Direct parameter binding |
-| `headless` | `--headless` | Direct parameter binding |
-| `auto_approve` | `--auto-approve` | Direct parameter binding |
+| Purpose | Flag Syntax |
+|---|---|
+| `model` | `--model {model_id}` |
+| `run_file` | `run -f {file_path}` |
+| `headless` | `--headless` |
+| `auto_approve` | `--auto-approve` |
 
 **Operational Tier Presets (Copy-Pasteable):**
 
@@ -162,9 +159,44 @@ Use this reference to construct execution commands and to bind the harness roste
   opencode run -f {prompt_file} --model o3-mini --headless --auto-approve
   ```
 
-**Prohibitions & Critical Constraints:**
+**Constraints:**
 
-- ⚠️ **Never run without --headless in unattended automation.**
+- Run with --headless in unattended automation.
+
+### Codex CLI (`codex`)
+
+- **Binary:** `codex`
+- **Type:** `cli`
+
+**Key CLI Flags:**
+
+| Purpose | Flag Syntax |
+|---|---|
+| `headless_prompt` | `exec "{prompt}"` |
+| `model` | `-m, --model {model_id}` |
+| `sandbox` | `-s, --sandbox read-only\|workspace-write\|danger-full-access` |
+| `json_events` | `--json` |
+| `last_message_file` | `-o, --output-last-message {file_path}` |
+
+**Operational Tier Presets (Copy-Pasteable):**
+
+- **T1 (`scout`):**
+  ```bash
+  codex exec -s read-only "{prompt}"
+  ```
+- **T2 (`driver`):**
+  ```bash
+  codex exec -s workspace-write "{prompt}"
+  ```
+- **T3 (`reviewer`):**
+  ```bash
+  codex exec -s read-only "{prompt}"
+  ```
+
+**Constraints:**
+
+- Run non-interactively with exec; the bare command opens the interactive UI.
+- Set the sandbox to the role: read-only for scout and reviewer, workspace-write for driver.
 
 ### Cline / Roo-Code Config (`cline-roo`)
 
@@ -206,9 +238,9 @@ Use this reference to construct execution commands and to bind the harness roste
 }
   ```
 
-**Prohibitions & Critical Constraints:**
+**Constraints:**
 
-- ⚠️ **Do not set temperature for deepseek-reasoner or thinking models in config.**
+- Leave temperature unset for deepseek-reasoner and thinking models in config.
 
 ### Antigravity Agent Primitive (invoke_subagent) (`antigravity-subagent`)
 
@@ -229,9 +261,9 @@ Use this reference to construct execution commands and to bind the harness roste
   invoke_subagent(Subagents=[{'TypeName': 'self', 'Role': 'Adversarial Reviewer', 'Model': 'pro', 'Prompt': '...'}])
   ```
 
-**Prohibitions & Critical Constraints:**
+**Constraints:**
 
-- ⚠️ **Do not pass external model IDs (e.g. 'claude-3-7-sonnet' or 'gpt-4o') to invoke_subagent; use only 'flash_lite', 'flash', 'pro', or 'inherit'.**
+- Pass only 'flash_lite', 'flash', 'pro', or 'inherit' as the Model of invoke_subagent.
 
 ### Direct Provider API Request Parameters (`direct-api`)
 
@@ -239,7 +271,7 @@ Use this reference to construct execution commands and to bind the harness roste
 
 **Provider API Parameter Rules:**
 
-- **Anthropic:** When thinking is enabled ({'type': 'enabled', 'budget_tokens': N}), temperature MUST NOT be set or must be exactly 1.0. Any other temperature returns HTTP 400.
-- **Openai:** For reasoning models (o1, o3-mini), do NOT send temperature, top_p, or presence_penalty. Use reasoning_effort ('low' | 'medium' | 'high').
-- **Deepseek:** For deepseek-reasoner (R1), temperature is fixed by the provider. Do not attempt to override temperature. For deepseek-chat, use temperature=0.0 for deterministic coding.
+- **Anthropic:** When thinking is enabled ({'type': 'enabled', 'budget_tokens': N}), leave temperature unset or use exactly 1.0; any other value returns HTTP 400.
+- **Openai:** For reasoning models (o1, o3-mini), send reasoning_effort ('low' | 'medium' | 'high') and omit temperature, top_p, and presence_penalty.
+- **Deepseek:** For deepseek-reasoner (R1), temperature is fixed by the provider, so omit it. For deepseek-chat, use temperature=0.0 for deterministic coding.
 - **Google:** For gemini-2.0-flash-thinking-exp, set thinkingConfig in generationConfig. Pass temperature=0.0 for deterministic code checks.

@@ -233,11 +233,7 @@ def render_harnesses_markdown(data: dict) -> str:
         "## Operating Rules",
         "",
         "1. **Snapshot first, then verify:** Take flags from this table. When a command fails, or the snapshot date above is more than 90 days old, confirm the flag with the harness's `--help` or the provider's documentation, and report the difference so the snapshot can be refreshed.",
-        "2. **Strict Reasoning Parameter Rules:**",
-        "   - **Anthropic Thinking:** When `thinking` is enabled, `temperature` MUST NOT be passed, or must be set strictly to `1.0`. Enforcing `temperature: 0.0` causes HTTP 400 rejection.",
-        "   - **OpenAI Reasoning (o1, o3-mini):** Never pass `temperature`, `top_p`, or penalty parameters. Set reasoning intensity via `reasoning_effort` (`low`, `medium`, `high`).",
-        "   - **DeepSeek Reasoner (R1):** Temperature is fixed internally by DeepSeek. Do not attempt to override temperature for R1.",
-        "3. **Headless Execution Requirement:** Always supply non-interactive / auto-approve flags (`-p`, `--yes`, `--permission-mode accept-all`) when dispatching background subagents to prevent CLI processes from locking up on interactive prompts.",
+        "2. **Run non-interactively:** Start background subagents with the harness's non-interactive form (`-p`, `--message`, `--headless`, `exec`) so the CLI cannot block on a prompt, and grant only the permission the role needs (see each card's constraints). Provider reasoning-parameter rules live in the Direct Provider API card.",
         "",
         "## Harness Reference Cards",
         ""
@@ -266,10 +262,10 @@ def render_harnesses_markdown(data: dict) -> str:
         if flags:
             md_lines.append("**Key CLI Flags:**")
             md_lines.append("")
-            md_lines.append("| Purpose | Flag Syntax | Description / Example |")
-            md_lines.append("|---|---|---|")
+            md_lines.append("| Purpose | Flag Syntax |")
+            md_lines.append("|---|---|")
             for flag_purpose, syntax in flags.items():
-                md_lines.append(f"| `{flag_purpose}` | `{syntax}` | Direct parameter binding |")
+                md_lines.append(f"| `{flag_purpose}` | `{syntax.replace('|', chr(92) + '|')}` |")
             md_lines.append("")
 
         # Tier presets
@@ -290,13 +286,13 @@ def render_harnesses_markdown(data: dict) -> str:
                     md_lines.append(f"  ```json\n{snippet_json}\n  ```")
             md_lines.append("")
 
-        # Prohibitions
+        # Constraints
         prohibitions = h.get("prohibitions", [])
         if prohibitions:
-            md_lines.append("**Prohibitions & Critical Constraints:**")
+            md_lines.append("**Constraints:**")
             md_lines.append("")
             for p in prohibitions:
-                md_lines.append(f"- ⚠️ **{p}**")
+                md_lines.append(f"- {p}")
             md_lines.append("")
 
         # API rules

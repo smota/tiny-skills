@@ -20,7 +20,7 @@ not-started -> in-progress -> implemented -> verified
 
 Acceptance records an authorized decision against concrete content. Verification records
 evidence that implementation conforms. An approved initialization does not accept unseen
-runtime designs. Do not label an ADR verified because its Markdown file exists.
+runtime designs.
 
 Keep stable IDs and preserve rejected/withdrawn reasoning. Substantive changes to accepted
 decisions need a successor ADR with reciprocal links; editorial corrections preserve meaning.
@@ -30,8 +30,8 @@ Deprecation states what new work must avoid and any migration/retirement implica
 
 Create one for consequential component boundaries, public contracts, persistence,
 concurrency/recovery, security, portability, dependency strategy, or licensing decisions.
-Routine changes inside accepted boundaries need no ADR. Do not force a workspace or
-distributed architecture onto a small library. Defer unknown product decisions explicitly.
+Routine changes inside accepted boundaries need no ADR. Fit the architecture to the
+project's size, and defer unknown product decisions explicitly.
 
 ## Working sequence
 
