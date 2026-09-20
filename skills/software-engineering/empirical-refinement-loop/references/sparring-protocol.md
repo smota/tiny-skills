@@ -1,14 +1,13 @@
 # Independent adversarial review
 
-Use the configured reviewer. Otherwise prefer an available independent internal subagent. External CLI review requires a selected provider, permission for the context transmission, and verified local invocation syntax; installation alone is not selection. Do not assume a universal `--prompt-file` flag. Bound time and output, capture exit status, and treat timeout, empty response or execution failure as missing review.
+Use the configured reviewer. Otherwise prefer an available independent internal subagent. External CLI review requires a provider the user selected, permission for the context transmission, and invocation syntax verified locally. Bound time and output, capture exit status, and treat timeout, empty response or execution failure as missing review.
 
 Give the reviewer the scoped objective, proposal, relevant raw source/test evidence, criteria, and constraints. Keep review read-only. Record the actual reviewer/provider and response; a persona performed by the author is self-review, not independent sparring. If no reviewer is available, planning may continue but reviewed implementation is blocked. User-requested self-review is a separately labeled mode.
 
 ## Reviewer brief
 
-Act as an adversarial systems reviewer. Challenge the causal hypothesis and whether the proposed experiment could pass while the actual failure remains. Identify concrete mechanisms and evidence, distinguishing observed defects from hypotheses. Inspect concurrency, interrupted operations, rollback, resource ownership and platform behavior only where relevant. Do not assume a universal OS buffer size or require every risk category in every project.
-
-Return blocking objections, nonblocking observations, and proposed reproductions or discriminating measurements. Explain why each blocker threatens a required contract. Avoid speculative scope expansion.
+Act as an adversarial systems reviewer. Challenge the causal hypothesis and whether the proposed experiment could pass while the actual failure remains. Identify concrete mechanisms and evidence, distinguishing observed defects from hypotheses. Inspect concurrency, interrupted operations, rollback, resource ownership and platform behavior only where relevant.
+Return blocking objections, nonblocking observations, and proposed reproductions or discriminating measurements. Explain why each blocker threatens a required contract. Keep findings within the scoped objective.
 
 ## Exchange and closure
 
