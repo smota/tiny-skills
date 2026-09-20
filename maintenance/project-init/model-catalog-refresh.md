@@ -6,7 +6,7 @@ Maintain the freshness, price accuracy, and tier classification of `maintenance/
 
 ## Triggers
 
-1. **Scheduled review:** Quarterly or whenever `refresh_model_catalog.py --check-staleness` reports the snapshot exceeds 90 days.
+1. **Scheduled review:** Quarterly or whenever `refresh_model_catalog.py --check-staleness` lists a model as unverified or verified more than 90 days ago.
 2. **Market events:** Major model family release (Anthropic Claude, OpenAI, Google Gemini, DeepSeek, Alibaba Qwen, Moonshot, Zhipu, MiniMax), major price reductions, or prompt-caching rate shifts.
 3. **Discontinued APIs:** Deprecation or retirement of snapshot dates and model identifiers.
 
@@ -43,8 +43,10 @@ Tier meanings are defined once, in `skills/software-engineering/project-init/ass
 2. **Update JSON Records:**
    Edit `maintenance/project-init/model-catalog.json` directly or use helper flags:
    ```bash
-   # Quick price update example:
+   # Quick price update example (stamps the model it changes):
    python maintenance/project-init/refresh_model_catalog.py --update-price <model_id> <input_usd> <output_usd> [<cache_usd>]
+   # Stamp every entry you checked against its provider's own pages:
+   python maintenance/project-init/refresh_model_catalog.py --mark-verified <model_id> [<model_id> ...]
    ```
 
 3. **Validate Catalog Integrity:**
@@ -66,7 +68,7 @@ Tier meanings are defined once, in `skills/software-engineering/project-init/ass
    ```
 
 6. **Self-Contained Commit:**
-   Commit the refreshed data, documentation, and snapshot date together:
+   Commit the refreshed data, documentation, and verification dates together:
    ```bash
-   git commit -m "chore(project-init): refresh model catalog snapshot to YYYY-MM-DD"
+   git commit -m "chore(project-init): refresh model catalog verification to YYYY-MM-DD"
    ```

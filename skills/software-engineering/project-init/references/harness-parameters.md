@@ -1,13 +1,13 @@
 # Agent Harness Invocation & Parameter Reference
 
-**Snapshot Date:** 2026-09-20  
+**Verification:** each card carries the date its flags were last checked against the installed CLI or the provider's docs; `not yet` means no such check is recorded.  
 **Scope:** Definitive command templates, CLI flags, internal agent primitives, and parameter constraints for major agent harnesses to eliminate trial-and-error model selection.
 
 Use this reference to construct execution commands and to bind the harness roster in [execution-policy.template.md](../assets/execution-policy.template.md).
 
 ## Operating Rules
 
-1. **Snapshot first, then verify:** Take flags from this table. When a command fails, or the snapshot date above is more than 90 days old, confirm the flag with the harness's `--help` or the provider's documentation, and report the difference so the snapshot can be refreshed.
+1. **Snapshot first, then verify:** Take flags from a card. When a command fails, or the card's Verified date is more than 90 days old or `not yet`, confirm the flag with the harness's `--help` or the provider's documentation, and report the difference so the card can be refreshed.
 2. **Run non-interactively:** Start background subagents with the harness's non-interactive form (`-p`, `--message`, `--headless`, `exec`) so the CLI cannot block on a prompt, and grant only the permission the role needs (see each card's constraints). Provider reasoning-parameter rules live in the Direct Provider API card.
 
 ## Harness Reference Cards
@@ -18,6 +18,7 @@ Use this reference to construct execution commands and to bind the harness roste
 - **Installation:** `npm install -g --ignore-scripts @earendil-works/pi-coding-agent`
 - **Website:** https://pi.dev
 - **Type:** `cli`
+- **Verified:** 2026-09-20
 
 **Key CLI Flags:**
 
@@ -54,12 +55,14 @@ Use this reference to construct execution commands and to bind the harness roste
 
 - Always pass -p / --print in non-interactive sessions to avoid TUI terminal lockup.
 - Always use --tools read,grep,find,ls when running in reviewer or scout role to enforce read-only boundary.
+- Unchecked: the DeepSeek preset ids use pi's provider/id form, and the pi install used for the last check lists no DeepSeek models.
 
 ### Claude Code CLI (`claude-code`)
 
 - **Binary:** `claude`
 - **Installation:** `npm install -g @anthropic-ai/claude-code`
 - **Type:** `cli`
+- **Verified:** 2026-09-20
 
 **Key CLI Flags:**
 
@@ -69,21 +72,22 @@ Use this reference to construct execution commands and to bind the harness roste
 | `headless_prompt` | `-p "{prompt}"` |
 | `stdin_prompt` | `echo "{prompt}" \| claude -p` |
 | `permission_mode` | `--permission-mode acceptEdits\|plan\|auto\|dontAsk\|bypassPermissions\|manual` |
+| `effort` | `--effort low\|medium\|high\|xhigh\|max` |
 | `output_format` | `--output-format json\|text` |
 
 **Operational Tier Presets (Copy-Pasteable):**
 
 - **T1 (`scout`):**
   ```bash
-  claude -p "{prompt}" --model claude-3-5-haiku-20241022 --permission-mode plan
+  claude -p "{prompt}" --model claude-haiku-4-5-20251001 --permission-mode plan
   ```
 - **T2 (`driver`):**
   ```bash
-  claude -p "{prompt}" --model claude-3-7-sonnet-20250219 --permission-mode acceptEdits
+  claude -p "{prompt}" --model sonnet --permission-mode acceptEdits
   ```
 - **T3 (`reviewer`):**
   ```bash
-  MAX_THINKING_TOKENS=16000 claude -p "{prompt}" --model claude-3-7-sonnet-20250219 --permission-mode plan
+  claude -p "{prompt}" --model opus --effort high --permission-mode plan
   ```
 
 **Constraints:**
@@ -91,12 +95,14 @@ Use this reference to construct execution commands and to bind the harness roste
 - Run with -p in non-interactive subagent sessions; without it the CLI blocks waiting for stdin.
 - Use a --permission-mode the role needs: plan for scout and reviewer (no edits), acceptEdits for driver.
 - Temperature is not configurable through Claude Code CLI flags.
+- Use the aliases sonnet and opus, which resolve to the latest model of each family. Use the full id claude-haiku-4-5-20251001 for Haiku: in the last check the alias haiku ran a Sonnet model.
 
 ### Aider CLI (`aider`)
 
 - **Binary:** `aider`
 - **Installation:** `pip install aider-chat`
 - **Type:** `cli`
+- **Verified:** not yet
 
 **Key CLI Flags:**
 
@@ -134,6 +140,7 @@ Use this reference to construct execution commands and to bind the harness roste
 
 - **Binary:** `opencode`
 - **Type:** `cli`
+- **Verified:** not yet
 
 **Key CLI Flags:**
 
@@ -167,6 +174,7 @@ Use this reference to construct execution commands and to bind the harness roste
 
 - **Binary:** `codex`
 - **Type:** `cli`
+- **Verified:** 2026-09-20
 
 **Key CLI Flags:**
 
@@ -201,6 +209,7 @@ Use this reference to construct execution commands and to bind the harness roste
 ### Cline / Roo-Code Config (`cline-roo`)
 
 - **Type:** `configuration_file`
+- **Verified:** not yet
 
 **Operational Tier Presets (Copy-Pasteable):**
 
@@ -245,6 +254,7 @@ Use this reference to construct execution commands and to bind the harness roste
 ### Antigravity Agent Primitive (invoke_subagent) (`antigravity-subagent`)
 
 - **Type:** `agent_primitive`
+- **Verified:** not yet
 
 **Operational Tier Presets (Copy-Pasteable):**
 
@@ -268,6 +278,7 @@ Use this reference to construct execution commands and to bind the harness roste
 ### Direct Provider API Request Parameters (`direct-api`)
 
 - **Type:** `api`
+- **Verified:** not yet
 
 **Provider API Parameter Rules:**
 

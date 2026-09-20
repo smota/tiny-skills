@@ -13,7 +13,12 @@ Usage:
     python refresh_model_catalog.py --render
     python refresh_model_catalog.py --validate
     python refresh_model_catalog.py --update-price <model_id> <input_usd> <output_usd> [<cache_read_usd>]
+    python refresh_model_catalog.py --mark-verified <id> [<id> ...]
     python refresh_model_catalog.py --check-staleness [max_days]
+
+Every model and harness entry carries its own `verified_at` date (null = never
+checked against a primary source). `--update-price` and `--mark-verified` stamp
+only the entries they touch, so one edit cannot make the whole file look fresh.
 """
 
 import argparse
@@ -53,6 +58,20 @@ def save_json(data: dict, path: str) -> None:
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write("\n")
+
+
+def check_verified_at(label: str, entry: dict, errors: list[str]) -> None:
+    """Every entry records when it was last checked against a primary source (null = never)."""
+    if "verified_at" not in entry:
+        errors.append(f"{label} is missing 'verified_at' (use null when unverified).")
+        return
+    value = entry["verified_at"]
+    if value is None:
+        return
+    try:
+        datetime.strptime(value, "%Y-%m-%d")
+    except (TypeError, ValueError):
+        errors.append(f"{label} has invalid 'verified_at' {value!r}; expected YYYY-MM-DD or null.")
 
 
 def validate_models(data: dict) -> list[str]:
@@ -107,6 +126,8 @@ def validate_models(data: dict) -> list[str]:
         if not model.get("strengths") or not isinstance(model.get("strengths"), str):
             errors.append(f"Model '{mid}' must have a non-empty 'strengths' description.")
 
+        check_verified_at(f"Model '{mid}'", model, errors)
+
     return errors
 
 
@@ -125,13 +146,12 @@ def format_context(ctx: int) -> str:
 
 
 def render_models_markdown(data: dict) -> str:
-    snapshot = data.get("snapshot_date", date.today().isoformat())
     models = data.get("models", [])
 
     md_lines = [
         "# Canonical Model Catalog for Tiered Orchestration",
         "",
-        f"**Snapshot Date:** {snapshot}  ",
+        "**Verification:** each row carries the date it was last checked against the provider's own pages; `unverified` means no such check is recorded.  ",
         "**Scope:** Reference mapping of frontier Western and Chinese AI models to operational tiers (T1–T3) for multi-harness and multi-model project governance.",
         "",
         "This catalog supplies the tier-to-model mapping in [execution-policy.template.md](../assets/execution-policy.template.md), which also defines tiers T0–T3. Verify API availability, identifiers, and current pricing against official provider documentation prior to locking budgets. For invocation flags and agent primitives, see [harness-parameters.md](harness-parameters.md).",
@@ -150,8 +170,8 @@ def render_models_markdown(data: dict) -> str:
         md_lines.append("")
         md_lines.append(desc)
         md_lines.append("")
-        md_lines.append("| Provider | Model Name | API Identifier | Origin | Context | In / Out (per 1M) | Cache In | Recommended Roles | Strengths |")
-        md_lines.append("|---|---|---|---|---|---|---|---|---|")
+        md_lines.append("| Provider | Model Name | API Identifier | Origin | Context | In / Out (per 1M) | Cache In | Recommended Roles | Strengths | Verified |")
+        md_lines.append("|---|---|---|---|---|---|---|---|---|---|")
 
         for m in tier_models:
             pricing = m.get("pricing_per_1m", {})
@@ -164,7 +184,7 @@ def render_models_markdown(data: dict) -> str:
             origin_badge = "Western" if m.get("origin") == "western" else "Chinese"
             strengths = m.get("strengths", "").replace("|", "\\|")
 
-            row = f"| **{m.get('provider')}** | {m.get('name')} | `{m.get('id')}` | {origin_badge} | {ctx_str} | {rates} | {cache_p} | {roles_str} | {strengths} |"
+            row = f"| **{m.get('provider')}** | {m.get('name')} | `{m.get('id')}` | {origin_badge} | {ctx_str} | {rates} | {cache_p} | {roles_str} | {strengths} | {m.get('verified_at') or 'unverified'} |"
             md_lines.append(row)
 
         md_lines.append("")
@@ -209,6 +229,8 @@ def validate_harnesses(data: dict) -> list[str]:
         if not h.get("name"):
             errors.append(f"Harness '{hid}' missing 'name'.")
 
+        check_verified_at(f"Harness '{hid}'", h, errors)
+
         # Check presets if present
         presets = h.get("tier_presets", {})
         if presets:
@@ -219,20 +241,19 @@ def validate_harnesses(data: dict) -> list[str]:
 
 
 def render_harnesses_markdown(data: dict) -> str:
-    snapshot = data.get("snapshot_date", date.today().isoformat())
     harnesses = data.get("harnesses", [])
 
     md_lines = [
         "# Agent Harness Invocation & Parameter Reference",
         "",
-        f"**Snapshot Date:** {snapshot}  ",
+        "**Verification:** each card carries the date its flags were last checked against the installed CLI or the provider's docs; `not yet` means no such check is recorded.  ",
         "**Scope:** Definitive command templates, CLI flags, internal agent primitives, and parameter constraints for major agent harnesses to eliminate trial-and-error model selection.",
         "",
         "Use this reference to construct execution commands and to bind the harness roster in [execution-policy.template.md](../assets/execution-policy.template.md).",
         "",
         "## Operating Rules",
         "",
-        "1. **Snapshot first, then verify:** Take flags from this table. When a command fails, or the snapshot date above is more than 90 days old, confirm the flag with the harness's `--help` or the provider's documentation, and report the difference so the snapshot can be refreshed.",
+        "1. **Snapshot first, then verify:** Take flags from a card. When a command fails, or the card's Verified date is more than 90 days old or `not yet`, confirm the flag with the harness's `--help` or the provider's documentation, and report the difference so the card can be refreshed.",
         "2. **Run non-interactively:** Start background subagents with the harness's non-interactive form (`-p`, `--message`, `--headless`, `exec`) so the CLI cannot block on a prompt, and grant only the permission the role needs (see each card's constraints). Provider reasoning-parameter rules live in the Direct Provider API card.",
         "",
         "## Harness Reference Cards",
@@ -255,6 +276,7 @@ def render_harnesses_markdown(data: dict) -> str:
         if h.get("website"):
             md_lines.append(f"- **Website:** {h.get('website')}")
         md_lines.append(f"- **Type:** `{htype}`")
+        md_lines.append(f"- **Verified:** {h.get('verified_at') or 'not yet'}")
         md_lines.append("")
 
         # Flags or schema
@@ -320,6 +342,7 @@ def update_price(model_id: str, in_usd: float, out_usd: float, cache_usd: float 
             m["pricing_per_1m"]["output_usd"] = out_usd
             if cache_usd is not None:
                 m["pricing_per_1m"]["cache_read_usd"] = cache_usd
+            m["verified_at"] = date.today().isoformat()
             found = True
             break
 
@@ -327,7 +350,6 @@ def update_price(model_id: str, in_usd: float, out_usd: float, cache_usd: float 
         print(f"Error: Model id '{model_id}' not found in catalog.", file=sys.stderr)
         return False
 
-    data["snapshot_date"] = date.today().isoformat()
     errors = validate_models(data)
     if errors:
         for err in errors:
@@ -342,24 +364,71 @@ def update_price(model_id: str, in_usd: float, out_usd: float, cache_usd: float 
     return True
 
 
-def check_staleness(max_days: int = 90) -> int:
-    exit_code = 0
-    for label, path in [("Model catalog", MODELS_JSON_PATH), ("Harness parameters", HARNESS_JSON_PATH)]:
+def mark_verified(entry_ids: list[str]) -> bool:
+    """Stamp today's date on catalog or harness entries checked against a primary source."""
+    today = date.today().isoformat()
+    remaining = set(entry_ids)
+    targets = [
+        (MODELS_JSON_PATH, "models", validate_models, render_models_markdown, MODELS_MD_PATH),
+        (HARNESS_JSON_PATH, "harnesses", validate_harnesses, render_harnesses_markdown, HARNESS_MD_PATH),
+    ]
+    for path, key, validate, render, md_path in targets:
         if not os.path.isfile(path):
             continue
         data = load_json(path)
-        snap_str = data.get("snapshot_date")
-        if not snap_str:
-            print(f"{label} has no snapshot_date.", file=sys.stderr)
-            exit_code = 1
+        touched = False
+        for entry in data.get(key, []):
+            if entry.get("id") in remaining:
+                entry["verified_at"] = today
+                remaining.discard(entry["id"])
+                touched = True
+        if not touched:
             continue
-        snap_date = datetime.strptime(snap_str, "%Y-%m-%d").date()
-        days_old = (date.today() - snap_date).days
-        if days_old > max_days:
-            print(f"STALE: {label} snapshot is {days_old} days old (limit {max_days} days).", file=sys.stderr)
+        errors = validate(data)
+        if errors:
+            for err in errors:
+                print(f"Validation error: {err}", file=sys.stderr)
+            return False
+        save_json(data, path)
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(render(data))
+    if remaining:
+        print(f"Error: unknown ids: {', '.join(sorted(remaining))}", file=sys.stderr)
+        return False
+    print(f"Marked {len(entry_ids)} entries verified on {today}.")
+    return True
+
+
+def check_staleness(max_days: int = 90) -> int:
+    """Flag every entry whose verified_at is missing or older than max_days."""
+    exit_code = 0
+    sources = [("Model catalog", MODELS_JSON_PATH, "models"), ("Harness parameters", HARNESS_JSON_PATH, "harnesses")]
+    for label, path, key in sources:
+        if not os.path.isfile(path):
+            continue
+        fresh, stale, unverified = 0, [], []
+        for entry in load_json(path).get(key, []):
+            verified = entry.get("verified_at")
+            if not verified:
+                unverified.append(entry.get("id"))
+                continue
+            days_old = (date.today() - datetime.strptime(verified, "%Y-%m-%d").date()).days
+            if days_old > max_days:
+                stale.append(f"{entry.get('id')} ({days_old}d)")
+            else:
+                fresh += 1
+        if stale or unverified:
             exit_code = 1
+            print(
+                f"{label}: {fresh} verified within {max_days} days, {len(stale)} stale, {len(unverified)} unverified.",
+                file=sys.stderr,
+            )
+            if stale:
+                print("  STALE: " + ", ".join(stale), file=sys.stderr)
+            if unverified:
+                print("  UNVERIFIED: " + ", ".join(unverified), file=sys.stderr)
         else:
-            print(f"OK: {label} snapshot is {days_old} days old (within {max_days} days).")
+            print(f"OK: {label}: all {fresh} entries verified within {max_days} days.")
     return exit_code
 
 
@@ -368,11 +437,12 @@ def main() -> int:
     parser.add_argument("--validate", action="store_true", help="Validate models and harness schemas.")
     parser.add_argument("--render", action="store_true", help="Re-render all markdown reference files.")
     parser.add_argument("--update-price", nargs="+", metavar="ARG", help="<model_id> <in_usd> <out_usd> [<cache_usd>]")
-    parser.add_argument("--check-staleness", nargs="?", const=90, type=int, help="Check if snapshots exceed N days.")
+    parser.add_argument("--mark-verified", nargs="+", metavar="ID", help="Stamp today's date on model or harness ids checked against a primary source.")
+    parser.add_argument("--check-staleness", nargs="?", const=90, type=int, help="Flag entries unverified or verified more than N days ago.")
 
     args = parser.parse_args()
 
-    if not any([args.validate, args.render, args.update_price, args.check_staleness is not None]):
+    if not any([args.validate, args.render, args.update_price, args.mark_verified, args.check_staleness is not None]):
         parser.print_help()
         return 0
 
@@ -415,6 +485,10 @@ def main() -> int:
         cache_p = float(args.update_price[3]) if args_len > 3 else None
         ok = update_price(mid, in_p, out_p, cache_p)
         if not ok:
+            return 1
+
+    if args.mark_verified:
+        if not mark_verified(args.mark_verified):
             return 1
 
     if args.render:
