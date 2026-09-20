@@ -3,14 +3,7 @@
 **Snapshot Date:** 2026-09-20  
 **Scope:** Reference mapping of frontier Western and Chinese AI models to operational tiers (T1–T3) for multi-harness and multi-model project governance.
 
-This catalog supports `[FILL 1]` in [orchestration-model.md](orchestration-model.md). Verify API availability, identifiers, and current pricing against official provider documentation prior to locking budgets. For invocation flags and agent primitives, see [harness-parameters.md](harness-parameters.md).
-
-## Summary of Operational Tiers
-
-- **T0 (Deterministic):** Local tools, test suites, compilers, and linters. *Zero tokens consumed.*
-- **T1 (Mechanical):** High-speed, cost-efficient models for inventory, file scanning, and tightly specified edits.
-- **T2 (Standard):** High-discipline coding models for implementation, test authoring, and standard refactoring.
-- **T3 (Judgment):** Deep reasoning models for architecture, contract specification, and independent adversarial review.
+This catalog supplies the tier-to-model mapping in [execution-policy.template.md](../assets/execution-policy.template.md), which also defines tiers T0–T3. Verify API availability, identifiers, and current pricing against official provider documentation prior to locking budgets. For invocation flags and agent primitives, see [harness-parameters.md](harness-parameters.md).
 
 ## T1: Mechanical Models (Scout, Inventory, Fast Context)
 

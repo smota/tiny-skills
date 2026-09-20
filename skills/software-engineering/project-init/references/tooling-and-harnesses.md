@@ -17,17 +17,8 @@ For new Node/Python projects, pnpm/uv are useful recommendations when compatible
 must not replace an existing manager without a reason and authorization. If mise is already
 used, preserve it. Do not install a manager merely because these notes mention it.
 
-Rust examples after selecting a Cargo layout:
-
-```text
-cargo fmt --all -- --check
-cargo check --workspace --all-targets --locked
-cargo clippy --workspace --all-targets --locked -- -D warnings
-cargo test --workspace --locked
-```
-
-Use offline flags only once required locked dependencies are available. Do not hardcode a
-Rust version from this skill. A successful `cargo check` does not prove linking or tests;
+For Rust, use offline flags only once required locked dependencies are available, and take the
+version from the project's toolchain file. A successful `cargo check` does not prove linking or tests;
 verify native build prerequisites early. On Windows, inspect an existing MSVC/SDK environment
 before proposing installation. Use command-scoped environment setup rather than global edits.
 Record sandbox versus host limitations accurately; permissions changes require authorization.

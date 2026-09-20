@@ -3,11 +3,11 @@
 **Snapshot Date:** 2026-09-20  
 **Scope:** Definitive command templates, CLI flags, internal agent primitives, and parameter constraints for major agent harnesses to eliminate trial-and-error model selection.
 
-Use this reference to directly construct execution commands in [orchestration-model.md](orchestration-model.md) and bind project harnesses under `[FILL 4]`.
+Use this reference to construct execution commands and to bind the harness roster in [execution-policy.template.md](../assets/execution-policy.template.md).
 
-## Zero-Guessing Operating Rules
+## Operating Rules
 
-1. **Never guess CLI flags at runtime:** Consult this table instead of issuing exploratory `--help` commands inside agent work sessions.
+1. **Snapshot first, then verify:** Take flags from this table. When a command fails, or the snapshot date above is more than 90 days old, confirm the flag with the harness's `--help` or the provider's documentation, and report the difference so the snapshot can be refreshed.
 2. **Strict Reasoning Parameter Rules:**
    - **Anthropic Thinking:** When `thinking` is enabled, `temperature` MUST NOT be passed, or must be set strictly to `1.0`. Enforcing `temperature: 0.0` causes HTTP 400 rejection.
    - **OpenAI Reasoning (o1, o3-mini):** Never pass `temperature`, `top_p`, or penalty parameters. Set reasoning intensity via `reasoning_effort` (`low`, `medium`, `high`).
