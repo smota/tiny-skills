@@ -22,17 +22,13 @@ Skills listed here. Each skill's own `SKILL.md` is authoritative for detailed us
 
 ## Empirical refinement quick start
 
-Use `/empirical-refinement-loop init [path]` to connect existing engineering
-documentation and agree where missing guidance belongs. The compact
-`.empirical-refinement-loop/state.json` index points to that documentation and
-tracks progress across conversations; internal document storage is also an option.
+```text
+/empirical-refinement-loop run worker shutdown rounds=2
+```
 
-Use `/empirical-refinement-loop plan [scope]` for a read-only proposal,
-`/empirical-refinement-loop run [scope] [rounds=N]` for bounded execution, and
-`/empirical-refinement-loop resume` to revalidate state and continue. These are
-conversational commands. Reviewed execution uses a real independent reviewer;
-commits and pushes require their own delivery scope. See the
-[skill documentation](skills/software-engineering/empirical-refinement-loop/SKILL.md).
+Runs up to two reviewed rounds on the scoped behavior, keeping evidence and stopping if blocked. See the
+[skill documentation](skills/software-engineering/empirical-refinement-loop/SKILL.md) for `init`, `plan`,
+`resume`, prerequisites, and failure behavior.
 
 ## Git delivery quick start
 
