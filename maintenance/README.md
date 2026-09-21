@@ -6,6 +6,7 @@ Maintainer-only material, one directory per skill: behavioral evals, refresh pro
 |---|---|
 | `project-init/` | `evals.md`; `model-catalog-refresh.md` and `harness-parameters-refresh.md` procedures; `refresh_model_catalog.py`, which validates the JSON data here and renders `skills/software-engineering/project-init/references/model-catalog.md` and `harness-parameters.md` |
 | `agent-refine/` | `evals.md` |
+| `cross-review/` | `evals.md` |
 | `release-notes/` | `evals.md` |
 | `techlead-planner/` | `evals.md` |
 
