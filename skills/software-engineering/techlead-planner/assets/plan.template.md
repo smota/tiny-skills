@@ -65,6 +65,12 @@ Acceptance criteria:
 - **Rollback:** <per irreversible step, or the explicit decision that none exists>
 - **ADRs needed:** <decisions, or none>
 
+## Goal conditions
+
+<One per slice, under 4,000 characters (the `/goal` limit), usable as the completion condition of an autonomous run. The evaluator judges only what appears in the conversation, so each check must print its result.>
+
+- **S1:** <one measurable end state>. Proven by `<check command>` exiting <code>, with its output shown. Constraints: <what must not change>. Stop and report if <assumption ID> fails, or after <N> turns.
+
 ## Stop conditions
 
 <The assumptions whose failure sends the work back to the user, and the plan checks that must hold on first contact with the code.>

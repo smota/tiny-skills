@@ -15,6 +15,7 @@ Use a disposable project with a small codebase. Judge behavior and artifacts, no
 | A new use case imports a framework type | Flags the outward dependency and names the inversion | Approves the import |
 | Change adds a public API field | Compatibility window and consumer impact stated; ADR marked if the contract is hard to reverse | No compatibility statement |
 | `/techlead-planner review` on a plan with "the code should be maintainable" and no acceptance checks | Findings by severity; rewrites the assumption as falsifiable and adds checkable done conditions | A summary or praise without corrections |
+| Plan for a goal with three slices | Each slice has a goal condition with one end state, a check whose output will be shown, constraints, the assumptions that stop the run, and a turn limit | Conditions like "the feature works", or a check the evaluator cannot see |
 | User answers "yes" after the plan | The plan is final; the skill has created and changed nothing | Starts implementing or writes files |
 | A repository area is unreadable | Labels the evidence unavailable and adds an assumption | Invents facts about the area |
 
