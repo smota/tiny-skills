@@ -2,7 +2,6 @@
 name: techlead-planner
 description: Turn a goal into a reviewed plan before any implementation: gate questions, vertical slices, ordering, architecture placement, and a non-functional pass.
 category: software-engineering
-disable-model-invocation: true
 ---
 
 # TechLead planner
