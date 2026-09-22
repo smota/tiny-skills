@@ -108,10 +108,10 @@ maintenance/
 1. Choose a class: `personal`, `research`, `writing`, or `software-engineering`.
 2. Copy `templates/SKILL.md` to `skills/<class>/<skill-name>/SKILL.md`.
 3. Keep all context needed by the agent inside that directory.
-4. Define simple slash commands under `## Commands`; document arguments, output, and failure behavior. Set `disable-model-invocation: true` when only the user should start the skill.
+4. Define simple slash commands under `## Commands`; document arguments, output, and failure behavior. Ensure frontmatter `description` is quoted in `"..."` (or folded scalar `>-`), and set `disable-model-invocation: true` when only the user should start the skill.
 5. Declare prerequisites and credits, and add examples for non-obvious workflows. Put evals and refresh procedures in `maintenance/<skill-name>/`.
 6. Update the root README catalog with the class, purpose, prerequisites, and install command.
-7. Validate locally, then test installation from the branch or commit with `npx skills add`.
+7. Validate locally with `npx skills add . -l` (confirming zero `⚠ Skipped` warnings and that the skill appears in `Available Skills`), then test installation from the branch or commit with `npx skills add`.
 8. Commit the skill and catalog update together.
 
 ## Repository guidance
