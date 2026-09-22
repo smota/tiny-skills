@@ -1,6 +1,6 @@
 ---
 name: empirical-refinement-loop
-description: Conduct bounded software refinement cycles with independent adversarial review, comparable measurements, fail-closed acceptance, and repository-backed continuity across conversations.
+description: "Conduct bounded software refinement cycles with independent adversarial review, comparable measurements, fail-closed acceptance, and repository-backed continuity across conversations."
 category: software-engineering
 disable-model-invocation: true
 ---

@@ -1,6 +1,6 @@
 ---
 name: release-notes
-description: Write a changelog or release notes, for end-users, the technical team, or executives, from work today or the scope since the last release.
+description: "Write a changelog or release notes, for end-users, the technical team, or executives, from work today or the scope since the last release."
 category: writing
 ---
 

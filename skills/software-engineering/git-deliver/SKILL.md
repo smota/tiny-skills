@@ -1,6 +1,6 @@
 ---
 name: git-deliver
-description: Commit and push scoped local work, optionally merge into its parent branch and push that branch, with multi-agent worktree checks and guided handling of ambiguous changes.
+description: "Commit and push scoped local work, optionally merge into its parent branch and push that branch, with multi-agent worktree checks and guided handling of ambiguous changes."
 category: software-engineering
 disable-model-invocation: true
 ---

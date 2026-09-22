@@ -1,6 +1,6 @@
 ---
 name: replace-with-skill-name
-description: Replace with a one-line summary. When the agent must reach this skill on its own, lead with the verb and list one trigger per distinct branch.
+description: "Replace with a one-line summary. When the agent must reach this skill on its own, lead with the verb and list one trigger per distinct branch."
 category: software-engineering
 # disable-model-invocation: true   # uncomment when only the user starts this skill
 ---

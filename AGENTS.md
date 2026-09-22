@@ -18,7 +18,7 @@ Build and maintain a catalog of independent, installable agent skills. Each skil
 
 Every skill MUST:
 
-- Include valid `SKILL.md` frontmatter with unique `name`, useful `description`, and matching `category`.
+- Include valid `SKILL.md` frontmatter with unique `name`, useful quoted `description`, and matching `category`.
 - Set `disable-model-invocation: true` and write a one-line human-facing `description` when only the user should start the skill. Omit the flag when the agent must reach the skill on its own, and put the trigger branches in its `description`.
 - State purpose, behavior, inputs, outputs, constraints, failure behavior, and slash commands in its own documentation.
 - Remain self-contained. No dependency on sibling skills, shared prompts, shared state, or undocumented services.

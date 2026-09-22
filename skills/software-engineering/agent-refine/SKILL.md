@@ -1,6 +1,6 @@
 ---
 name: agent-refine
-description: Distill session lessons and consolidate a project's agent-instruction layers into scoped, reviewable policy.
+description: "Distill session lessons and consolidate a project's agent-instruction layers into scoped, reviewable policy."
 category: software-engineering
 disable-model-invocation: true
 ---

@@ -1,6 +1,6 @@
 ---
 name: cross-review
-description: Run an independent, read-only adversarial review of a change in a different harness or model than the one that wrote it, and report the findings with provenance.
+description: "Run an independent, read-only adversarial review of a change in a different harness or model than the one that wrote it, and report the findings with provenance."
 category: software-engineering
 disable-model-invocation: true
 ---

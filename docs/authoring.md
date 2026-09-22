@@ -7,11 +7,13 @@ Each skill is a directory under `skills/<class>/` containing `SKILL.md`. Support
 ```yaml
 ---
 name: example-skill
-description: One-line description of when to use skill.
+description: "One-line description of when to use skill."
 category: research
 disable-model-invocation: true
 ---
 ```
+
+Always quote the `description` string in double quotes (`"..."`) or use folded block scalar (`>-`). Unquoted strings cause YAML parsing failures whenever the description contains a colon followed by a space (`: `), apostrophes, or other YAML special characters.
 
 `disable-model-invocation: true` is optional and marks a skill only the user starts. Its `description` is then a one-line human summary with no triggers, and it adds no context load in clients that honor the flag. Omit the flag when the agent must reach the skill on its own, and write the `description` as a pointer: lead with the verb, list one trigger per distinct branch, and leave out what the body already says.
 
@@ -58,6 +60,7 @@ Add `## Prerequisites` listing every underlying tool, runtime, package, account,
 - Evals, refresh procedures, and generators stored in `maintenance/<skill-name>/`, with no link to them from `SKILL.md`.
 - Deterministic scripts use relative paths and explain dependencies.
 - Secrets never committed.
+- Frontmatter `description` is quoted to prevent YAML parsing errors from punctuation or colons.
 - Installation works with `npx skills add` against repository or skill path.
 
 ## Validation
@@ -65,7 +68,11 @@ Add `## Prerequisites` listing every underlying tool, runtime, package, account,
 From repository root:
 
 ```bash
+# 1. Verify file layout
 find skills -mindepth 3 -maxdepth 3 -name SKILL.md -print
+
+# 2. Validate YAML frontmatter and syntax across all skills
+npx skills add . -l
 ```
 
-For each skill, verify frontmatter, unique `name`, useful `description`, command behavior, and absence of sibling dependencies. Test installation in a temporary consumer project before release.
+For each skill, verify valid frontmatter with quoted `description`, unique `name`, command behavior, and absence of sibling dependencies. Test installation in a temporary consumer project before release.

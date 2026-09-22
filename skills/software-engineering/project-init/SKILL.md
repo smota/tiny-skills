@@ -1,6 +1,6 @@
 ---
 name: project-init
-description: Initialize or plan a project's engineering baseline: a short intake, canonical agent instructions, folder structure, ADR lifecycle, and tooling checks.
+description: "Initialize or plan a project's engineering baseline: a short intake, canonical agent instructions, folder structure, ADR lifecycle, and tooling checks."
 category: software-engineering
 disable-model-invocation: true
 ---
