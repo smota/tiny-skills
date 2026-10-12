@@ -11,6 +11,8 @@ disable-model-invocation: true
 
 Operate, inspect, and coordinate OpenRig agent topologies, seats, and daemon infrastructure. Provide a comprehensive reference for native `rig` CLI commands alongside high-level composite workflows that supervise tasks, resolve interactive blockers, conduct fleet health audits, ensure watchdog alignment, and execute safe seat handovers.
 
+This skill functions as an outside-in fleet supervision and control plane. It operates cleanly alongside internal seat-level skills (such as `queue-handoff`, `mission-slice-sop`, and `openrig-user`) by providing external observability, intervention, and dispatch without dictating internal in-seat task implementation.
+
 ## Prerequisites
 
 - OpenRig CLI installed and accessible in `$PATH` (`rig` executable, version >= 0.6.0). Run `rig --version` to verify.
@@ -22,7 +24,11 @@ Operate, inspect, and coordinate OpenRig agent topologies, seats, and daemon inf
 ## Credits
 
 - Built for and based on the OpenRig local control plane CLI (`rig`), developed by [mvschwarz/openrig](https://github.com/mvschwarz/openrig).
-- Incorporates OpenRig canonical patterns for watchdog interventions, lifecycle restore-honesty, and L1–L3 coordination protocols.
+- Incorporates and formalizes operational patterns from canonical OpenRig in-seat skills:
+  - `openrig-user` (CLI command surface, flag semantics, and safety defaults).
+  - `queue-handoff` (L3 durable task custody and handoff chains).
+  - `refocusing` and `watchdog` (the 3-level intervention doctrine: wake, refocus, and alignment checkpoint).
+  - `seat-continuity-and-handover` and `rig-lifecycle` (successor handover procedures and the restore-honesty rule).
 
 ## High-Level Commands
 
