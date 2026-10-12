@@ -1,8 +1,7 @@
 ---
-name: openring
-description: "Operate and orchestrate OpenRig agent fleets via direct CLI commands and high-level supervision workflows."
+name: openrig
+description: "Operate and orchestrate OpenRig agent fleets via direct CLI commands and slash commands: audit fleet health (/openrig-fleet), dispatch durable queue tasks (/openrig-dispatch), unblock stalled seats (/openrig-unblock), apply watchdog alignment (/openrig-watchdog-align), or execute seat handovers (/openrig-handover)."
 category: software-engineering
-disable-model-invocation: true
 ---
 
 # OpenRig
@@ -30,11 +29,11 @@ This skill functions as an outside-in fleet supervision and control plane. It op
   - `refocusing` and `watchdog` (the 3-level intervention doctrine: wake, refocus, and alignment checkpoint).
   - `seat-continuity-and-handover` and `rig-lifecycle` (successor handover procedures and the restore-honesty rule).
 
-## High-Level Commands
+## Commands
 
 The high-level slash commands compose multiple low-level `rig` primitives into safe, transactional, and observable operational workflows.
 
-### `/openring-fleet [rig-id]`
+### `/openrig-fleet [rig-id]`
 
 - **Input:** Optional `rig-id` to filter a specific topology, or omit to audit the entire local host fleet.
 - **Action:**
@@ -46,7 +45,7 @@ The high-level slash commands compose multiple low-level `rig` primitives into s
 - **Output:** Structured diagnostic summary outlining daemon status, active rigs, node health matrix (alive/idle/held/attn), stuck queue counts, and any recommended remediation steps.
 - **Failure:** If the daemon is unreachable, runs `rig crash-cart` to output the recovery verdict as JSON without mutating state.
 
-### `/openring-dispatch <seat@rig> <task-file-or-text>`
+### `/openrig-dispatch <seat@rig> <task-file-or-text>`
 
 - **Input:** Target seat reference `<seat@rig>` and the task description string or path to a markdown/text task specification file.
 - **Action:**
@@ -58,7 +57,7 @@ The high-level slash commands compose multiple low-level `rig` primitives into s
 - **Output:** Confirmation containing task ID, target seat verification, initial screen capture snippet, and instructions on how to track progress.
 - **Failure:** If the seat is not in `running` state or is already claiming uncompleted work, reports the conflict and refuses dispatch without explicit operator override.
 
-### `/openring-unblock <seat@rig>`
+### `/openrig-unblock <seat@rig>`
 
 - **Input:** Target seat reference `<seat@rig>` that is stalled, parked, or marked with `ATTN > 0`.
 - **Action:**
@@ -74,7 +73,7 @@ The high-level slash commands compose multiple low-level `rig` primitives into s
 - **Output:** Classification of the blockage, input sent, and before/after screen verification. If the issue is an environmental or credential failure, escalates to the operator with actionable diagnostic details.
 - **Failure:** Does not kill or abort tmux sessions automatically. If unblock attempts fail after 2 captures, flags the seat for manual operator inspection.
 
-### `/openring-watchdog-align <seat@rig> [wake|refocus|checkpoint]`
+### `/openrig-watchdog-align <seat@rig> [wake|refocus|checkpoint]`
 
 - **Input:** Target seat reference `<seat@rig>` and desired intervention level (`wake`, `refocus`, or `checkpoint`). Defaults to `wake` if idle, or `refocus` if drifting.
 - **Action:**
@@ -88,7 +87,7 @@ The high-level slash commands compose multiple low-level `rig` primitives into s
 - **Output:** Level of intervention applied, dispatched message, and observed seat acknowledgment.
 - **Failure:** Refuses intervention if the seat is actively writing code or generating output (prevents cadence pollution and bureaucracy theater).
 
-### `/openring-handover <source-seat@rig> <target-seat@rig>`
+### `/openrig-handover <source-seat@rig> <target-seat@rig>`
 
 - **Input:** Current owner seat `<source-seat@rig>` and the successor seat `<target-seat@rig>`.
 - **Action:**
