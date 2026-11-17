@@ -7,3 +7,6 @@ node_modules/
 .vscode/
 coverage/
 dist/
+
+# graphify knowledge-graph output (regenerated)
+graphify-out/
