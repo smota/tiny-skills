@@ -48,3 +48,12 @@ Every skill MUST:
 - README is the public catalog; each skill's own documentation is the authority for detailed usage.
 - Never commit or merge a skill without running `npx skills add . -l` and confirming zero `⚠ Skipped` warnings and clean listing.
 - Do not merge a skill without its README catalog entry.
+
+## How work enters this repo
+
+- GitHub Issues on `smota/tiny-skills` are the backlog.
+- Use one issue, one `work/<slug>` branch, and one PR into trunk `main` with `Closes #<n>`.
+- Run AgentFlow `bounded` role passes. One agent runs them by default. Disclose self-review.
+- Run every command in `agent-workflow.config.json`'s `ciCommands` before the PR.
+- Samuel merges with squash.
+- Use Meshloop only when the user names it.

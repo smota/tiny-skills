@@ -10,3 +10,4 @@ dist/
 
 # graphify knowledge-graph output (regenerated)
 graphify-out/
+/.agentflow/transactions/
